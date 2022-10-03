@@ -55,7 +55,7 @@ void Menu::drawFrame(int cX, int cY)
 		{
 			if (x == cX || x == widht - 1 || y == cY || y == height - 1) {
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN_FADE);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE);
 				std::cout << ' ';
 			}
 		}
@@ -133,6 +133,16 @@ void Menu::drawOptions(int cX, int cY)
 		std::cout << item;
 	}
 	SetColor(WHITE, BLACK);
+}
+
+void Menu::drawTransaction(Transaction& transaction)
+{
+	this->options.clear();
+	this->options.push_back(transaction.getName());
+	this->options.push_back(std::to_string(transaction.getAmount()));
+	this->options.push_back(transaction.getCategory()->getName());
+	this->options.push_back(timeToString(transaction.getDate()));
+	drawOptions();
 }
 
 void Menu::drawMessageFrame(std::string message)

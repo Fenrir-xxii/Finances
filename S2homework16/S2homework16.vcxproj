@@ -128,12 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Account.cpp" />
     <ClCompile Include="Category.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DataBasecpp.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="S2homework16.cpp" />
-    <ClCompile Include="Turnover.cpp" />
+    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Transaction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />
@@ -143,7 +145,8 @@
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Finances.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Turnover.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="Transaction.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

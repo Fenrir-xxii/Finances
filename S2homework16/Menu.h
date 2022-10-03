@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include "console.h"
+#include "Transaction.h"
+#include "Time.h"
 
 
 class Menu {
@@ -24,6 +26,8 @@ public:
 	void drawOptions();
 
 	void drawOptions(int cX, int cY);
+
+	void drawTransaction(Transaction& transaction);
 
 	void down();
 
