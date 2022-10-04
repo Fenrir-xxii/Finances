@@ -1,7 +1,7 @@
 2
-1
-Food
-0
 2
 Salary
+1
+5
+Sales
 1

@@ -50,22 +50,32 @@ void Account::editTransaction(Transaction& transaction)
 {
 	//menu
 	std::vector<std::string> options;
-	/*options.push_back(transaction.getName());
-	options.push_back(std::to_string(transaction.getAmount()));
-	options.push_back(transaction.getCategory()->getName());
-	options.push_back(timeToString(transaction.getDate()));*/
+	std::vector<std::string> categoryNamesIncome = dataBase.getCategoryNames(true);
+	std::vector<std::string> categoryNamesExpenses = dataBase.getCategoryNames(false);
+	int maxWidth = 0;
+	for (int i = 0; i < categoryNamesExpenses.size(); i++)
+	{
+		if (categoryNamesExpenses[i].length() > maxWidth)
+		{
+			maxWidth = categoryNamesExpenses[i].length();
+		}
+	}
+	maxWidth += 6;
 	Menu menu;
 	menu.drawTransaction(transaction);
-	//menu.drawMessageFrame("Pick field you want to edit");
+	Menu menuCategoryIncome(categoryNamesIncome);
+	Menu menuCategoryExpenses(categoryNamesExpenses);
 	int key = 0;
 	int num = 0;
 	bool work = true;
+	bool work2 = true;
+	bool leftActive = true;
 	std::string newName;
 	std::string newDate;
 	double newAmount = 0;
-	menu.drawMessageFrame("Pick field you want to edit");
-	menu.drawFrame(1, 1);
-	menu.drawOptions(3, 3);
+	//menu.drawMessageFrame("Pick field you want to edit");
+	menu.drawFrame();
+	menu.drawOptions();
 	do
 	{
 		key = getKey();
@@ -73,11 +83,11 @@ void Account::editTransaction(Transaction& transaction)
 		{
 		case UP_ARROW:
 			menu.up();
-			menu.drawOptions(3, 3);
+			menu.drawOptions();
 			break;
 		case DOWN_ARROW:
 			menu.down();
-			menu.drawOptions(3, 3);
+			menu.drawOptions();
 			break;
 		case ENTER:
 			menu.drawMessageFrame("Enter new parameter");
@@ -89,8 +99,8 @@ void Account::editTransaction(Transaction& transaction)
 				transaction.setName(newName);
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
-				menu.drawFrame(1, 1);
-				menu.drawOptions(3, 3);
+				menu.drawFrame();
+				menu.drawOptions();
 				
 				break;
 			case 1:
@@ -98,23 +108,72 @@ void Account::editTransaction(Transaction& transaction)
 				transaction.setAmount(newAmount);
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
-				menu.drawFrame(1, 1);
-				menu.drawOptions(3, 3);
+				menu.drawFrame();
+				menu.drawOptions();
 				break;
 			case 2:
-
+				system("cls");
+				menuCategoryExpenses.drawFrame("Expenses", true);
+				menuCategoryExpenses.drawOptions();
+				menuCategoryIncome.drawFrame(maxWidth,0, "Income", false);
+				menuCategoryIncome.drawOptions(maxWidth,2);
+				while (work2)
+				{
+					key = getKey();
+					switch (key)
+					{
+					case UP_ARROW:
+						leftActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
+						menuCategoryExpenses.drawFrame("Expenses", true);
+						menuCategoryExpenses.drawOptions();
+						menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+						menuCategoryIncome.drawOptions(maxWidth, 2);
+						break;
+					case DOWN_ARROW:
+						leftActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
+						menuCategoryExpenses.drawFrame("Expenses", true);
+						menuCategoryExpenses.drawOptions();
+						menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+						menuCategoryIncome.drawOptions(maxWidth, 2);
+						break;
+					case TAB:
+						leftActive = !leftActive;
+					case ENTER:
+						//TODO
+						if (leftActive)
+						{
+							num = menuCategoryExpenses.getSelectedOption();
+							transaction.setCategory(dataBase.getCategoryByName(categoryNamesExpenses[num], false));
+							work2 = false;
+						}
+						else
+						{
+							num = menuCategoryIncome.getSelectedOption();
+							transaction.setCategory(dataBase.getCategoryByName(categoryNamesIncome[num], true));
+							work2 = false;
+						}
+						system("cls");
+						break;
+					case ESC:
+						system("cls");
+						work2 = false;
+						break;
+					}
+				}
+				menu.drawTransaction(transaction);
+				menu.drawMessageFrame("Pick field you want to edit");
+				menu.drawFrame();
+				menu.drawOptions();
 				break;
 			case 3:
 				std::cin >> newDate;
 				transaction.setTime(fromString(newDate, "%d.%m.%Y"));
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
-				menu.drawFrame(1, 1);
-				menu.drawOptions(3, 3);
+				menu.drawFrame();
+				menu.drawOptions();
 				break;
 			}
-			//system("cls");
-			//work = false;
 			break;
 		case ESC:
 			work = false;

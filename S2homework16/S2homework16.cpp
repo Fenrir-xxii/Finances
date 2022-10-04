@@ -17,7 +17,7 @@ void ShowConsoleCursor(bool showFlag)
 int main()
 {
     ShowConsoleCursor(false);
-    DataBase dataBase;
+    //DataBase dataBase;
     /*dataBase.addCategory("Food", false);
     dataBase.addCategory("Salary", true);
     dataBase.saveCategories();*/
@@ -27,6 +27,18 @@ int main()
 
     auto timeNow = std::chrono::system_clock::now();
     Category category("Food", false);
+    Category category2("Salary", true);
+    Category category3("Fuel", false);
+    Category category4("Shoping", false);
+    Category category5("Sales", true);
+    DataBase dataBase;
+    dataBase.addCategory(category);
+    dataBase.addCategory(category2);
+    dataBase.addCategory(category3);
+    dataBase.addCategory(category4);
+    dataBase.addCategory(category5);
+    dataBase.saveAll();
+
     Transaction transaction(203.50, category, "Potatoes", timeNow);
     Account account;
     account.addTransaction(transaction);

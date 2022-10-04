@@ -40,4 +40,9 @@ public:
 		return in;
 	}
 
+	bool operator==(Category& category)
+	{
+		return this->name == category.name and this->isIncome == category.isIncome;
+	}
+
 };

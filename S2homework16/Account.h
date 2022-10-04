@@ -2,7 +2,7 @@
 #include <vector>
 #include "Transaction.h"
 #include "menu.h"
-//#include "Time.h"
+#include "DataBase.h"
 
 class Account
 {
@@ -11,6 +11,7 @@ private:
 	double balance;
 	std::vector<Transaction> debit;
 	std::vector<Transaction> credit;
+	DataBase dataBase;
 public:
 	Account() {};
 	Account(std::string name, double balance)

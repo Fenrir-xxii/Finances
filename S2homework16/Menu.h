@@ -19,9 +19,13 @@ public:
 	Menu() {};
 	void drawFrame();
 
+	void drawFrame(bool active);
+
 	void drawFrame(int cX, int xY);
 
-	void drawFrame(std::string header);
+	void drawFrame(std::string header, bool active);
+
+	void drawFrame(int cX, int xY, std::string header, bool active);
 
 	void drawOptions();
 

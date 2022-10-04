@@ -45,6 +45,33 @@ void Menu::drawFrame()
 	SetColor(WHITE, BLACK);
 }
 
+void Menu::drawFrame(bool active)
+{
+	size_t widht = getFrameWidth();
+	size_t height = getFrameHeight();
+
+	for (size_t y = 0; y < height; y++)
+	{
+		for (size_t x = 0; x < widht; x++)
+		{
+			if (x == 0 || x == widht - 1 || y == 0 || y == height - 1) {
+				SetCursorPosition(x, y);
+				active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				std::cout << ' ';
+			}
+		}
+	}
+
+	for (int i = 0; i < widht; i++)
+	{
+		SetCursorPosition(i, 2);
+		active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+		std::cout << ' ';
+	}
+
+	SetColor(WHITE, BLACK);
+}
+
 void Menu::drawFrame(int cX, int cY)
 {
 	size_t widht = getFrameWidth() + cX;
@@ -64,7 +91,7 @@ void Menu::drawFrame(int cX, int cY)
 }
 
 
-void Menu::drawFrame(std::string header)
+void Menu::drawFrame(std::string header, bool active)
 {
 	size_t headerSize = header.size()+2;
 	size_t width = getFrameWidth();
@@ -78,13 +105,38 @@ void Menu::drawFrame(std::string header)
 			if (x == 0 || x == maxWidth-1 || y == 0 || y == height - 1) 
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN_FADE);
+				active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
 	}
 	SetCursorPosition(1, 0);
-	SetColor(ConsoleColor::BLACK, ConsoleColor::GREEN_FADE);
+	active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+	std::cout << header;
+	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
+}
+
+void Menu::drawFrame(int cX, int cY, std::string header, bool active)
+{
+	size_t headerSize = header.size() + 2;
+	size_t width = getFrameWidth() + cX;
+	size_t maxWidth = (width > headerSize) ? width : headerSize;
+	size_t height = getFrameHeight() + cY;
+
+	for (size_t y = cY; y < height; y++)
+	{
+		for (size_t x = cX; x < maxWidth; x++)
+		{
+			if (x == cX || x == maxWidth - 1 || y == cY || y == height - 1)
+			{
+				SetCursorPosition(x, y);
+				active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				std::cout << ' ';
+			}
+		}
+	}
+	SetCursorPosition(cX+1, 0);
+	active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 	std::cout << header;
 	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
 }
@@ -114,7 +166,7 @@ void Menu::drawOptions()
 
 void Menu::drawOptions(int cX, int cY) 
 {
-	int startX = cX;
+	int startX = cX+3;
 	int startY = cY;
 	int max = getMaxItemSize();
 	for (size_t i = 0; i < options.size(); i++)
