@@ -48,7 +48,7 @@ public:
 		in >> transaction.amount;
 		in.ignore(256, '\n');
 		in >> transaction.category;
-		in.ignore(256, '\n');
+		//in.ignore(256, '\n');
 		/*DataBase db;
 		transaction.setCategory(db.getCategoryById(categoryId));*/
 		getline(in, transaction.name);

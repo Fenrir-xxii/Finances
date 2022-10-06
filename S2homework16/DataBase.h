@@ -18,7 +18,7 @@ private:
 	fs::path categoryIncomePath = fs::current_path().string() + "\\DataBase\\CategoriesIncome.txt";
 	fs::path categoryExpensesPath = fs::current_path().string() + "\\DataBase\\CategoriesExpenses.txt";
 	fs::path transactionPath = fs::current_path().string() + "\\DataBase\\Transactions.txt";
-	fs::path accountPath = fs::current_path().string() + "\\DataBase\\Accounts";
+	fs::path accountPath = fs::current_path().string() + "\\DataBase\\Accounts\\";
 	int lastId = 0;
 public:
 	DataBase()

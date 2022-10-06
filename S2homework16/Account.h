@@ -37,15 +37,15 @@ public:
 	friend std::ofstream& operator <<(std::ofstream& out, Account& account)
 	{
 		out << account.balance << std::endl;
-		out << account.debit.size();
-		out << account.credit.size();
+		out << account.debit.size() << std::endl;
+		out << account.credit.size() << std::endl;
 		for (int i = 0; i < account.debit.size(); i++)
 		{
-			out << account.debit[i];
+			out << account.debit[i] << std::endl;
 		}
 		for (int i = 0; i < account.credit.size(); i++)
 		{
-			out << account.credit[i];
+			out << account.credit[i] << std::endl;
 		}
 		return out;
 	}
