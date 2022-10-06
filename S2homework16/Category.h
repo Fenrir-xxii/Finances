@@ -26,7 +26,7 @@ public:
 	{
 		out << category.id << std::endl;
 		out << category.name << std::endl;
-		out << category.isIncome << std::endl;
+		out << category.isIncome;// << std::endl;
 		return out;
 	}
 

@@ -10,7 +10,7 @@ void Transaction::setName(std::string name)
 	this->name = name;
 }
 
-void Transaction::setTime(std::chrono::time_point<std::chrono::system_clock> date)
+void Transaction::setDate(std::chrono::time_point<std::chrono::system_clock> date)
 {
 	this->date = date;
 }

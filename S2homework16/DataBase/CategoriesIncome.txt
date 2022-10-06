@@ -1,7 +1,6 @@
 2
 2
 Salary
-1
-5
-Sales
+10
+
 1

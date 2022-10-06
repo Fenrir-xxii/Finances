@@ -50,8 +50,11 @@ void Account::editTransaction(Transaction& transaction)
 {
 	//menu
 	std::vector<std::string> options;
-	std::vector<std::string> categoryNamesIncome = dataBase.getCategoryNames(true);
-	std::vector<std::string> categoryNamesExpenses = dataBase.getCategoryNames(false);
+	//std::vector<std::string> categoryNamesIncome = dataBase.getCategoryNames(true);
+	//std::vector<std::string> categoryNamesExpenses = dataBase.getCategoryNames(false);
+	std::vector<std::string> categoryNamesIncome;
+	std::vector<std::string> categoryNamesExpenses;
+
 	int maxWidth = 0;
 	for (int i = 0; i < categoryNamesExpenses.size(); i++)
 	{
@@ -143,13 +146,13 @@ void Account::editTransaction(Transaction& transaction)
 						if (leftActive)
 						{
 							num = menuCategoryExpenses.getSelectedOption();
-							transaction.setCategory(dataBase.getCategoryByName(categoryNamesExpenses[num], false));
+							//transaction.setCategory(dataBase.getCategoryByName(categoryNamesExpenses[num], false));
 							work2 = false;
 						}
 						else
 						{
 							num = menuCategoryIncome.getSelectedOption();
-							transaction.setCategory(dataBase.getCategoryByName(categoryNamesIncome[num], true));
+							//transaction.setCategory(dataBase.getCategoryByName(categoryNamesIncome[num], true));
 							work2 = false;
 						}
 						system("cls");
@@ -167,7 +170,7 @@ void Account::editTransaction(Transaction& transaction)
 				break;
 			case 3:
 				std::cin >> newDate;
-				transaction.setTime(fromString(newDate, "%d.%m.%Y"));
+				transaction.setDate(fromString(newDate, "%d.%m.%Y"));
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
 				menu.drawFrame();
@@ -203,4 +206,29 @@ void Account::editCreditTransaction(int idx)
 	}
 
 	editTransaction(credit[idx]);
+}
+
+void Account::save()
+{
+
+}
+
+std::string Account::getName()
+{
+	return this->name;
+}
+
+double Account::getBalance()
+{
+	return this->balance;
+}
+
+void Account::setName(std::string name)
+{
+	this->name = name;
+}
+
+void Account::setBalance(double balance)
+{
+	this->balance = balance;
 }

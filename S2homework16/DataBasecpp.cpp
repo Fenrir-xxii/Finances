@@ -79,6 +79,22 @@ void DataBase::loadCategories(fs::path path, std::vector<Category> &categories)
 	in.close();
 }
 
+void DataBase::loadTransactions(fs::path path, std::vector<Transaction>& transactions)
+{
+	transactions.clear();
+	std::ifstream in(path);
+	int size = 0;
+	in >> size;
+	in.ignore(256, '\n');
+	for (int i = 0; i < size; i++)
+	{
+		Transaction temp;
+		in >> temp;
+		transactions.push_back(temp);
+	}
+	in.close();
+}
+
 void DataBase::saveCategories(fs::path path, std::vector<Category> &categories)
 {
 	std::ofstream out(path);
@@ -89,6 +105,18 @@ void DataBase::saveCategories(fs::path path, std::vector<Category> &categories)
 	}
 	out.close();
 }
+
+void DataBase::saveTransactions(fs::path path, std::vector<Transaction>& transactions)
+{
+	std::ofstream out(path);
+	out << transactions.size() << std::endl;
+	for (int i = 0; i < transactions.size(); i++)
+	{
+		out << transactions[i];
+	}
+	out.close();
+}
+
 
 std::vector<std::string> DataBase::getCategoryNames(bool isIncome)
 {
@@ -112,10 +140,31 @@ std::vector<std::string> DataBase::getCategoryNames(bool isIncome)
 	return names;
 }
 
+Category& DataBase::getCategoryById(int id)
+{
+	for (int i = 0; i < this->categoriesIncome.size(); i++)
+	{
+		if (this->categoriesIncome[i].getId() == id)
+		{
+			return categoriesIncome[i];
+		}
+	}
+	for (int i = 0; i < this->categoriesExpenses.size(); i++)
+	{
+		if (this->categoriesExpenses[i].getId() == id)
+		{
+			return categoriesExpenses[i];
+		}
+	}
+
+}
+
 void DataBase::saveAll()
 {
 	saveCategories(categoryIncomePath, categoriesIncome);
 	saveCategories(categoryExpensesPath, categoriesExpenses);
+	saveTransactions(transactionPath, transactions);
+	saveAccounts(accountPath, accounts);
 }
 
 Category& DataBase::getCategoryByName(std::string name, bool isIncome)
@@ -142,4 +191,73 @@ Category& DataBase::getCategoryByName(std::string name, bool isIncome)
 		}
 	}
 	return categoriesExpenses[0]; // ??
+}
+
+void DataBase::addTransaction(Transaction& transaction)
+{
+	for (int i = 0; i < transactions.size(); i++)
+	{
+		if (transaction == transactions[i])
+		{
+			return;
+		}
+	}
+	this->transactions.push_back(transaction);
+}
+
+
+void DataBase::saveAccounts(fs::path path, std::vector<Account>& account)
+{
+	//fs::path path = this->homePath;
+	fs::path mainPath = fs::current_path();
+	fs::current_path(path);
+	for (int i = 0; i < account.size(); i++)
+	{
+		std::string name = account[i].getName() + ".txt";
+		path /= name;
+		std::ofstream ofs;
+		ofs.open(name, std::ios::out);
+		ofs << account[i];
+		ofs.close();
+	}
+	fs::current_path(mainPath);
+}
+
+void DataBase::loadAccounts(fs::path path, std::vector<Account>& accounts)
+{
+	std::vector <std::string> accNames;
+	std::string name;
+	for (auto const& dirEntry : fs::directory_iterator{ path })
+	{
+		if (dirEntry.is_regular_file())
+		{
+			name = dirEntry.path().filename().string();
+			accNames.push_back(name);
+		}
+	}
+
+	accounts.clear();
+	//std::ifstream in(path);
+	for (int i = 0; i < accNames.size(); i++)
+	{
+		Account account;
+		account.setName(accNames[i]);  //remove '.txt'
+		
+		std::ifstream in(accNames[i]);
+		in >> account;
+		accounts.push_back(account);
+		in.close();
+	}
+}
+
+void DataBase::addAccount(Account& account)
+{
+	for (int i = 0; i < accounts.size(); i++)
+	{
+		if (account == accounts[i])
+		{
+			return;
+		}
+	}
+	this->accounts.push_back(account);
 }

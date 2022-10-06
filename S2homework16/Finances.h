@@ -7,6 +7,10 @@ class Finances
 {
 private:
 	std::vector<Account> accounts;
+	DataBase dataBase;
 public:
-
+	Finances()
+	{
+		//dataBase.load
+	}
 };

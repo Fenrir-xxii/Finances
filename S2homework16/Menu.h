@@ -31,6 +31,8 @@ public:
 
 	void drawOptions(int cX, int cY);
 
+	void drawOptions2(int size, int currentLine, int previousLine);
+
 	void drawTransaction(Transaction& transaction);
 
 	void down();

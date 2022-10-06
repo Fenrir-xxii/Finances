@@ -187,6 +187,50 @@ void Menu::drawOptions(int cX, int cY)
 	SetColor(WHITE, BLACK);
 }
 
+void Menu::drawOptions2(int size, int currentLine, int previousLine)
+{
+	int startX = 3;
+	int startY = 2;
+	int max = getMaxItemSize();
+
+	int upperEdge = 0;
+	int lowerEdge = size;
+
+	int start = 0;
+
+	if (currentLine >= size)
+	{
+		start = currentLine - size + 1;
+		//start = currentLine - size+1;
+		//start++;
+	}
+	/*if (currentLine < previousLine)
+	{
+		start = previousLine - size;
+	}*/
+	int end = start + size;
+
+	for (size_t i = start; i < end; i++)
+	{
+		if (i <= end)
+		{
+			SetCursorPosition(startX, startY + i-start);
+			if (activeOption == i)
+			{
+				SetColor(RED, WHITE);
+			}
+			else
+			{
+				SetColor(WHITE, BLACK);
+			}
+			auto item = options[i];
+			item.append(std::string(max - item.size(), ' '));
+			std::cout << item;
+		}
+	}
+	SetColor(WHITE, BLACK);
+}
+
 void Menu::drawTransaction(Transaction& transaction)
 {
 	this->options.clear();
