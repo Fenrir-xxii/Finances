@@ -44,3 +44,44 @@ bool Transaction::isIncome()
 {
 	return this->category.getIsIncome();
 }
+
+void Transaction::loadCategories(fs::path path, std::vector<Category>& categories)
+{
+	categories.clear();
+	std::ifstream in(path);
+	int size = 0;
+	in >> size;
+	in.ignore(256, '\n');
+	for (int i = 0; i < size; i++)
+	{
+		Category temp;
+		in >> temp;
+		categories.push_back(temp);
+	}
+	in.close();
+}
+
+Category& Transaction::getCategoryByName(std::string name, bool isIncome)
+{
+	if (isIncome)
+	{
+		for (int i = 0; i < this->categoriesIncome.size(); i++)
+		{
+			if (categoriesIncome[i].getName() == name)
+			{
+				return categoriesIncome[i];
+			}
+		}
+
+	}
+	else
+	{
+		for (int i = 0; i < this->categoriesExpenses.size(); i++)
+		{
+			if (categoriesExpenses[i].getName() == name)
+			{
+				return categoriesExpenses[i];
+			}
+		}
+	}
+}

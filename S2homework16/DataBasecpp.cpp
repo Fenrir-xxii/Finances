@@ -241,7 +241,9 @@ void DataBase::loadAccounts(fs::path path, std::vector<Account>& accounts)
 	for (int i = 0; i < accNames.size(); i++)
 	{
 		Account account;
-		account.setName(accNames[i]);  //remove '.txt'
+		std::string accName = accNames[i].substr(0, accNames[i].length() - 4);
+		//accName.substr(0, accName.length() - 3);
+		account.setName(accName);  //remove '.txt'
 		fs::path fullPath = path.string() + accNames[i];
 		std::ifstream in(fullPath);
 		in >> account;

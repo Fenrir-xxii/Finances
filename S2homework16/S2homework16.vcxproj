@@ -133,6 +133,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DataBasecpp.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Report.cpp" />
     <ClCompile Include="S2homework16.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transaction.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Finances.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Report.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transaction.h" />
   </ItemGroup>

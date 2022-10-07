@@ -2,7 +2,11 @@
 #include <vector>
 #include "Transaction.h"
 #include "menu.h"
+#include <filesystem>
 //#include "DataBase.h"
+
+namespace fs = std::filesystem;
+
 
 class Account
 {
@@ -31,8 +35,13 @@ public:
 	void editTransaction(Transaction& transaction);
 	void editDebitTransaction(int idx);
 	void editCreditTransaction(int idx);
-	void load();
-	void save();
+	std::vector<std::string> getCategoryNames(bool isIncome);
+	double getBalanceByDate(std::chrono::time_point<std::chrono::system_clock> date);
+	void sortTransactionsByDate();
+	bool compareDate(Transaction& transaction1, Transaction& transaction2);
+	std::vector<Transaction> getTransactions(bool isIncome);
+	//void load();
+	//void save();
 
 	friend std::ofstream& operator <<(std::ofstream& out, Account& account)
 	{
@@ -79,6 +88,22 @@ public:
 	bool operator==(Account& account)
 	{
 		return this->name == account.name and this->balance == account.balance;
+	}
+
+	friend std::ostream& operator <<(std::ostream& out, Account& account)
+	{
+		out << "Balance: " << account.balance << std::endl;
+		out << "Debit operations: " << account.debit.size() << std::endl;
+		out << "Credit operations: " << account.credit.size() << std::endl;
+		for (int i = 0; i < account.debit.size(); i++)
+		{
+			out << account.debit[i] << std::endl;
+		}
+		for (int i = 0; i < account.credit.size(); i++)
+		{
+			out << account.credit[i] << std::endl;
+		}
+		return out;
 	}
 
 };

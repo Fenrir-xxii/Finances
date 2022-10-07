@@ -2,6 +2,7 @@
 #include "DataBase.h"
 #include "Transaction.h"
 #include "Account.h"
+#include "Report.h"
 
 void ShowConsoleCursor(bool showFlag)
 {
@@ -32,12 +33,12 @@ int main()
     Category category4("Shoping", false);
     Category category5("Sales", true);
     DataBase dataBase;
-   /* dataBase.addCategory(category);
+    dataBase.addCategory(category);
     dataBase.addCategory(category2);
     dataBase.addCategory(category3);
     dataBase.addCategory(category4);
     dataBase.addCategory(category5);
-    dataBase.saveAll();*/
+    dataBase.saveAll();
 
     Transaction transaction(203.50, category, "Potatoes", timeNow);
 
@@ -49,13 +50,22 @@ int main()
     //auto timeNow = std::chrono::system_clock::now();
     std::string time = "10.10.2022";
     auto timeT = fromString(time, "%d.%m.%Y");
+    time = "01.09.2022";
+    auto timeT2 = fromString(time, "%d.%m.%Y");
+    time = "07.10.2022";
+    auto timeT3 = fromString(time, "%d.%m.%Y");
+    time = "22.09.2022";
+    auto timeT4 = fromString(time, "%d.%m.%Y");
+    time = "10.10.2022";
+    auto timeT5 = fromString(time, "%d.%m.%Y");
+
     //Category category("Food", false);
     //Transaction transaction(203.50, category, "Potatoes", timeT);
     Transaction transaction2(23.80, category, "Juice", timeT);
-    Transaction transaction3(1245.99, category4, "Jacket", timeT);
-    Transaction transaction4(12600, category2, "Salary", timeT);
-    Transaction transaction5(100.09, category4, "Toy", timeT);
-    Transaction transaction6(1600, category2, "Premium", timeT);
+    Transaction transaction3(1245.99, category4, "Jacket", timeT2);
+    Transaction transaction4(12600, category2, "Salary", timeT3);
+    Transaction transaction5(100.09, category4, "Toy", timeT4);
+    Transaction transaction6(1600, category2, "Premium", timeT5);
     //DataBase dataBase;
     //dataBase.addTransaction(transaction);
     //dataBase.addTransaction(transaction2);
@@ -72,10 +82,31 @@ int main()
 
     dataBase.addAccount(main);
     dataBase.addAccount(sub);
+
+    //main.editCreditTransaction(0);
+
     dataBase.saveAll();
 
+    std::cout << main << std::endl;
+
+    main.sortTransactionsByDate();
+
+    std::cout << "AFTER SORTING:\n" << main << std::endl;
 
 
+    std::string timeS = "07.10.2022";
+    auto timeST = fromString(timeS, "%d.%m.%Y");
+
+    std::cout << "Balance for main: " << main.getBalanceByDate(timeST) << std::endl;
+    std::cout << "Balance for sub: " << sub.getBalanceByDate(timeST) << std::endl;
+    std::cout << std::endl;
+
+    Report report;
+    std::cout << "Last n days REPORT:\n";
+    report.showLastNDaysReport(main, 30);
+    std::cout << std::endl;
+    std::cout << "Monthly REPORT:\n";
+    report.showMonthlyReport(main, 10);
 
     return 0;
 }

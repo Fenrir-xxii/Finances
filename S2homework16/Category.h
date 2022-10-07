@@ -26,7 +26,7 @@ public:
 	{
 		out << category.id << std::endl;
 		out << category.name << std::endl;
-		out << category.isIncome;// << std::endl;
+		out << category.isIncome << std::endl;
 		return out;
 	}
 
@@ -43,6 +43,14 @@ public:
 	bool operator==(Category& category)
 	{
 		return this->name == category.name and this->isIncome == category.isIncome;
+	}
+
+	friend std::ostream& operator <<(std::ostream& out, Category& category)
+	{
+		out << "Category ID: " << category.id << std::endl;
+		out << "Category Name: " << category.name << std::endl;
+		out << "Category IsIncome?: "  << category.isIncome << std::endl;
+		return out;
 	}
 
 };
