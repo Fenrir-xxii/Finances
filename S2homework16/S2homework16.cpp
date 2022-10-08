@@ -108,6 +108,15 @@ int main()
     std::cout << "Monthly REPORT:\n";
     report.showMonthlyReport(main, 10);
 
+    std::cout << "Category REPORT:\n";
+    report.showTransactionsByCategory(main, 9);
+    std::cout << std::endl;
+    std::cout << "N biggest transactions:\n";
+    std::cout << "Income:\n";
+    report.showNBiggestTransactions(main, 3, true);
+    std::cout << "Expenses:\n";
+    report.showNBiggestTransactions(main, 3, false);
+
     return 0;
 }
 
