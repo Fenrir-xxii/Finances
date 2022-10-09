@@ -1,11 +1,13 @@
 #pragma once
 
-enum OUTCOME_CATEGORY
+enum MAIN_MENU_OPTIONS
 {
-	FOOD = 0, NON_FOOD, SERVICES, TRANSPORT, ENTERTAINMENT, OTHER_OUT
+	MY_ACCOUNTS = 0, ACCOUNT_OPTIONS, EXIT
 };
 
-enum INCOME_CATEGORY
+struct AccountData
 {
-	SALARY = 0, SALES, OTHER_IN
+	std::string name;
+	double balance;
+	std::string currency;
 };

@@ -13,22 +13,26 @@ class Account
 private:
 	std::string name;
 	double balance;
+	std::string currency;
 	std::vector<Transaction> debit;
 	std::vector<Transaction> credit;
 	//DataBase dataBase;
 public:
 	Account() {};
-	Account(std::string name, double balance)
+	Account(std::string name, double balance, std::string currency)
 	{
 		this->name = name;
 		this->balance = balance;
+		this->currency = currency;
 	}
 
 	//std::string timeToString(std::chrono::system_clock::time_point tp);
 	//std::chrono::system_clock::time_point fromString(const std::string& dateStr, const std::string& format);
 	std::string getName();
+	std::string getCurrency();
 	double getBalance();
 	void setName(std::string name);
+	void setCurrency(std::string currency);
 	void setBalance(double balance);
 	void addTransaction(Transaction& transaction);
 	void removeTransaction(int idx, bool isIncome);
@@ -45,6 +49,8 @@ public:
 
 	friend std::ofstream& operator <<(std::ofstream& out, Account& account)
 	{
+		out << account.name << std::endl;
+		out << account.currency << std::endl;
 		out << account.balance << std::endl;
 		out << account.debit.size() << std::endl;
 		out << account.credit.size() << std::endl;
@@ -61,6 +67,8 @@ public:
 
 	friend std::ifstream& operator >>(std::ifstream& in, Account& account)
 	{
+		getline(in, account.name);
+		getline(in, account.currency);
 		in >> account.balance;
 		in.ignore(256, '\n');
 		int debitSize = 0;
@@ -92,6 +100,8 @@ public:
 
 	friend std::ostream& operator <<(std::ostream& out, Account& account)
 	{
+		out << "Account name: " << account.name << std::endl;
+		out << "Account currency: " << account.currency << std::endl;
 		out << "Balance: " << account.balance << std::endl;
 		out << "Debit operations: " << account.debit.size() << std::endl;
 		out << "Credit operations: " << account.credit.size() << std::endl;

@@ -3,6 +3,7 @@
 #include "Transaction.h"
 #include "Account.h"
 #include "Report.h"
+#include "Finances.h"
 
 void ShowConsoleCursor(bool showFlag)
 {
@@ -16,6 +17,15 @@ void ShowConsoleCursor(bool showFlag)
 }
 
 int main()
+{
+    ShowConsoleCursor(false);
+    
+    Finances finances;
+    finances.showMainMenu();
+
+}
+
+int main1()
 {
     ShowConsoleCursor(false);
     //DataBase dataBase;
@@ -71,12 +81,12 @@ int main()
     //dataBase.addTransaction(transaction2);
     //dataBase.saveAll();
 
-    Account main("main", 2300);
+    Account main("main", 2300, "UAH");
     main.addTransaction(transaction);
     main.addTransaction(transaction2);
     main.addTransaction(transaction3);
     main.addTransaction(transaction4);
-    Account sub("sub", 150.60);
+    Account sub("sub", 150.60, "EUR");
     sub.addTransaction(transaction5);
     sub.addTransaction(transaction6);
 
@@ -102,20 +112,13 @@ int main()
     std::cout << std::endl;
 
     Report report;
-    std::cout << "Last n days REPORT:\n";
-    report.showLastNDaysReport(main, 30);
-    std::cout << std::endl;
-    std::cout << "Monthly REPORT:\n";
-    report.showMonthlyReport(main, 10);
 
-    std::cout << "Category REPORT:\n";
-    report.showTransactionsByCategory(main, 9);
-    std::cout << std::endl;
-    std::cout << "N biggest transactions:\n";
-    std::cout << "Income:\n";
+    report.showLastNDaysReport(main, 30);
+    report.showMonthlyReport(main, 10);
+    report.showTransactionsByCategory(main, 10);
     report.showNBiggestTransactions(main, 3, true);
-    std::cout << "Expenses:\n";
     report.showNBiggestTransactions(main, 3, false);
+    report.showMonthlyReport(sub, 10);
 
     return 0;
 }

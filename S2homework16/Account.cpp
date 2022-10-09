@@ -248,6 +248,11 @@ std::string Account::getName()
 	return this->name;
 }
 
+std::string Account::getCurrency()
+{
+	return this->currency;
+}
+
 double Account::getBalance()
 {
 	return this->balance;
@@ -256,6 +261,11 @@ double Account::getBalance()
 void Account::setName(std::string name)
 {
 	this->name = name;
+}
+
+void Account::setCurrency(std::string currency)
+{
+	this->currency = currency;
 }
 
 void Account::setBalance(double balance)

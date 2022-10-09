@@ -292,3 +292,244 @@ void Menu::setActiveOption(int idx)
 {
 	activeOption = idx;
 }
+
+
+
+
+
+
+size_t MultiPageMenu::getMaxItemSize() const
+{
+	size_t max = 0;
+	for (std::string item : options)
+	{
+		if (item.size() > max)
+		{
+			max = item.size();
+		}
+	}
+	return max;
+}
+
+size_t MultiPageMenu::getFrameWidth() const
+{
+	return getMaxItemSize() + 6;
+}
+
+size_t MultiPageMenu::getFrameHeight() const
+{
+	return rows + 4;
+}
+
+void MultiPageMenu::drawFrame()
+{
+	size_t width = getFrameWidth();
+	size_t height = getFrameHeight();
+	for (size_t y = 0; y < height; y++)
+	{
+		for (size_t x = 0; x < width; x++)
+		{
+			if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+			{
+				SetCursorPosition(x, y);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				std::cout << ' ';
+			}
+		}
+	}
+	SetColor(WHITE, BLACK);
+}
+
+void MultiPageMenu::drawFrame2()
+{
+	size_t width = 80;
+	size_t height = 5;
+	for (size_t y = 0; y < height; y++)
+	{
+		for (size_t x = 0; x < width; x++)
+		{
+			if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+			{
+				SetCursorPosition(x, y);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				std::cout << ' ';
+			}
+		}
+	}
+
+	for (size_t y = 1; y < height-1; y++)
+	{
+		for (size_t x = width-25; x < width; x++)
+		{
+			if (x == width - 25 or x == width - 7)
+			{
+				SetCursorPosition(x, y);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				std::cout << ' ';
+			}
+		}
+	}
+
+	SetColor(WHITE, BLACK);
+}
+
+void MultiPageMenu::drawFrame2(int cX, int cY)
+{
+	size_t width = 80;
+	size_t height = 25;
+	for (size_t y = cY; y < height; y++)
+	{
+		for (size_t x = cX; x < width; x++)
+		{
+			if (x == cX || x == width - 1 || y == cY || y == height - 1)
+			{
+				SetCursorPosition(x, y);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				std::cout << ' ';
+			}
+		}
+	}
+
+	for (size_t x = cX; x < width; x++)  // headers line (horizontal)
+	{
+		SetCursorPosition(x, cY+2);
+		SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+		std::cout << ' ';
+	}
+
+	for (size_t y = cY; y < height; y++)
+	{
+		for (size_t x = cX+11; x < width; x++)
+		{
+			if (x == cX+11 or x == cX + 41 or x == cX + 57 or x == width - 12)
+			{
+				SetCursorPosition(x, y);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				std::cout << ' ';
+			}
+		}
+	}
+	
+
+	SetColor(WHITE, BLACK);
+}
+
+void MultiPageMenu::drawOptions()
+{
+	int startX = 3;
+	int startY = 2;
+	int max = getMaxItemSize();
+
+	for (size_t i = beginRow; i < endRow; i++)
+	{
+		if (i >= options.size())
+		{
+			SetCursorPosition(startX, startY + (i - beginRow));
+			SetColor(WHITE, BLACK);
+			std::cout << std::string(max, ' ');
+			continue;
+		}
+		SetCursorPosition(startX, startY + (i - beginRow));
+		if (activeOption == i)
+		{
+			SetColor(RED, WHITE);
+		}
+		else
+		{
+			SetColor(WHITE, BLACK);
+		}
+		auto item = options[i];
+		item.append(std::string(max - item.size(), ' '));
+		std::cout << item;
+	}
+}
+
+void MultiPageMenu::drawOptions(std::vector < AccountData > &accountData)
+{
+	int startX = 3;
+	int startY = 1;
+	int max = getMaxItemSize();
+
+	for (size_t i = beginRow; i < endRow; i++)
+	{
+		if (i >= accountData.size())
+		{
+			SetCursorPosition(startX, startY + (i - beginRow));
+			SetColor(WHITE, BLACK);
+			std::cout << std::string(max, ' ');
+			continue;
+		}
+		SetCursorPosition(startX, startY + (i - beginRow));
+		if (activeOption == i)
+		{
+			SetColor(RED, WHITE);
+		}
+		else
+		{
+			SetColor(WHITE, BLACK);
+		}
+		auto item = accountData[i].name;
+		item.append(std::string(max - item.size(), ' '));
+		std::cout << item;
+	}
+
+	for (size_t i = beginRow; i < endRow; i++)
+	{
+		SetCursorPosition(56, i+1);
+		std::cout << accountData[i].balance;
+		SetCursorPosition(74, i+1);
+		std::cout << accountData[i].currency;
+	}
+	std::cout << std::endl;
+
+}
+
+void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions)
+{
+	SetCursorPosition(1, 5);
+	std::cout << "date";
+	SetCursorPosition(12, 5);
+	std::cout << "description";
+	SetCursorPosition(42, 5);
+	std::cout << "category";
+	SetCursorPosition(58, 5);
+	std::cout << "debit";
+	SetCursorPosition(69, 5);
+	std::cout << "credit";
+	SetCursorPosition(0, 35);
+}
+
+void MultiPageMenu::down() {
+	activeOption++;
+	if (activeOption >= options.size())
+	{
+		activeOption = 0;
+		beginRow = 0;
+		endRow = rows;
+	}
+	if (activeOption >= endRow)
+	{
+		beginRow++;
+		endRow++;
+	}
+}
+
+void MultiPageMenu::up()
+{
+	activeOption--;
+	if (activeOption < 0) {
+		activeOption = options.size() - 1;
+		beginRow = options.size() - rows;
+		endRow = options.size();
+	}
+	if (activeOption < beginRow)
+	{
+		beginRow--;
+		endRow--;
+	}
+}
+
+int MultiPageMenu::getSelectedOption() const
+{
+	return activeOption;
+}

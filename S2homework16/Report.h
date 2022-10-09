@@ -7,6 +7,7 @@ struct ReportCategory
 	std::string name;
 	double amount;
 	bool isIncome;
+	std::string currency;
 };
 
 
@@ -22,8 +23,8 @@ public:
 	void showLastNDaysReport(Account& account, int nDays);
 	void showTransactionsByCategory(Account& account, int month);
 	void showNBiggestTransactions(Account& account, int qty, bool isIncome);
-	void print();
-
+	void printReport(Account & account, double &initBalance, double &finalBalance, std::string initDate, std::string finalDate);
+	void printCategoryReport(std::vector <ReportCategory> &results);
 	
 };
 

@@ -45,10 +45,18 @@ void Report::showMonthlyReport(Account& account, int month)
 
 	auto m = ymd.month();
 
+	int lastDay = getLastDayOfMonth(month, 2022);
+	std::string lastDateString = std::to_string(lastDay) + "." + std::to_string(month) + "." + "2022";
+	auto tp2 = fromString(lastDateString, "%d.%m.%Y");
+
+	double initialBalance = account.getBalanceByDate(tp);
+	double finalBalance = account.getBalanceByDate(tp2);
+
 	std::vector<Transaction> debit = account.getTransactions(true);
 	std::vector<Transaction> credit = account.getTransactions(false);
 
 	Account temp;
+	temp.setCurrency(account.getCurrency());
 
 	for (int i = 0; i < debit.size(); i++)
 	{
@@ -70,9 +78,16 @@ void Report::showMonthlyReport(Account& account, int month)
 			temp.addTransaction(credit[i]);
 		}
 	}
+	SetColor(BLACK, YELLOW_FADE);
+	std::cout << "Monthly report for month #" << month;
+	SetColor(WHITE, BLACK);
+	std::cout << std::endl << std::endl;
+	printReport(temp, initialBalance, finalBalance, date, lastDateString);
 
-	std::cout << temp << std::endl;
-	//std::cout << "Month: " << m << std::endl;
+	//std::cout << "Initial balance: " << initialBalance << std::endl;
+	//std::cout << "Final balance: " << finalBalance << std::endl;
+	//std::cout << temp << std::endl;
+	////std::cout << "Month: " << m << std::endl;
 }
 
 void Report::showLastNDaysReport(Account& account, int nDays)
@@ -80,11 +95,18 @@ void Report::showLastNDaysReport(Account& account, int nDays)
 	std::chrono::system_clock::time_point timeEnd = std::chrono::system_clock::now();
 	std::chrono::system_clock::time_point timeStart = timeEnd - std::chrono::hours(24 * nDays);
 
+	std::string timeEndString = timeToString(timeEnd);
+	std::string timeStartString = timeToString(timeStart);
+
 	std::vector<Transaction> debit = account.getTransactions(true);
 	std::vector<Transaction> credit = account.getTransactions(false);
 
+	double initialBalance = account.getBalanceByDate(timeStart);
+	double finalBalance = account.getBalanceByDate(timeEnd);
+
 	Account temp;
-	
+	temp.setCurrency(account.getCurrency());
+
 	for (int i = 0; i < debit.size(); i++)
 	{
 		if (debit[i].getDate() >= timeStart and debit[i].getDate() <= timeEnd)
@@ -100,7 +122,14 @@ void Report::showLastNDaysReport(Account& account, int nDays)
 		}
 	}
 
-	std::cout << temp << std::endl;
+	SetColor(BLACK, YELLOW_FADE);
+	std::cout << "Monthly report for last " << nDays << " day(s)";
+	SetColor(WHITE, BLACK);
+	std::cout << std::endl << std::endl;
+
+	printReport(temp, initialBalance, finalBalance, timeStartString, timeEndString);
+
+	//std::cout << temp << std::endl;
 
 }
 
@@ -153,6 +182,7 @@ void Report::showTransactionsByCategory(Account& account, int month)
 		}
 		temp.amount = sum;
 		temp.isIncome = true;
+		temp.currency = account.getCurrency();
 		results.push_back(temp);
 	}
 	for (int cat = 0; cat < categoriesExpenses.size(); cat++)
@@ -177,16 +207,23 @@ void Report::showTransactionsByCategory(Account& account, int month)
 		}
 		temp.amount = sum;
 		temp.isIncome = false;
+		temp.currency = account.getCurrency();
 		results.push_back(temp);
 	}
 
 	std::sort(results.begin(), results.end(), reportCategorySort);
 
-	for (int i = 0; i < results.size(); i++)
+	SetColor(BLACK, YELLOW_FADE);
+	std::cout << "Report by categories for month #" << month;
+	SetColor(WHITE, BLACK);
+	std::cout << std::endl << std::endl;
+	printCategoryReport(results);
+
+	/*for (int i = 0; i < results.size(); i++)
 	{
 		std::cout << "Category: " << results[i].name << "(isIncome?) '" << results[i].isIncome << "' - ";
 		std::cout << "amount: " << results[i].amount << std::endl;
-	}
+	}*/
 
 }
 
@@ -215,20 +252,142 @@ void Report::showNBiggestTransactions(Account& account, int qty, bool isIncome)
 	std::sort(debit.begin(), debit.end(), compareTransaction);
 	std::sort(credit.begin(), credit.end(), compareTransaction);
 
+	SetColor(BLACK, YELLOW_FADE);
+	if (isIncome)
+	{
+		std::cout << "Report for " << quantity << " biggest INCOME transaction(s)";
+	}
+	else
+	{
+		std::cout << "Report for " << quantity << " biggest EXPENSE transaction(s)";
+	}
+	SetColor(WHITE, BLACK);
+	std::cout << std::endl << std::endl;
 	for (int i = 0; i < quantity; i++)
 	{
 		if (isIncome)
 		{
-			std::cout << "INCOME transaction #" << (i+1)  << "\n" << debit[i] << std::endl;
+			std::cout << "Transaction";
+			SetColor(GREEN, BLACK);
+			std::cout << " #" << (i + 1);
+			SetColor(WHITE, BLACK);
+			std::cout << ":" << std::endl;
+			std::cout << timeToString(debit[i].getDate()) << " ";
+			std::cout << debit[i].getName() << " ";
+			SetColor(GREEN, BLACK);
+			std::cout << debit[i].getAmount();
+			SetColor(WHITE, BLACK);
+			std::cout << " " << account.getCurrency() << std::endl;
 		}
 		else
 		{
-			std::cout << "EXPENSE transaction #" << (i + 1) << "\n" << credit[i] << std::endl;
+			std::cout << "Transaction";
+			SetColor(RED, BLACK);
+			std::cout << " #" << (i + 1) << ":";
+			SetColor(WHITE, BLACK); 
+			std::cout << ":" << std::endl;
+			std::cout << timeToString(credit[i].getDate()) << " ";
+			std::cout << credit[i].getName() << " ";
+			SetColor(RED, BLACK);
+			std::cout << credit[i].getAmount();
+			SetColor(WHITE, BLACK);
+			std::cout << " " << account.getCurrency() << std::endl;
 		}
+		SetColor(WHITE, BLACK);
 	}
+	std::cout << std::endl;
 }
 
-void Report::print()
+void Report::printReport(Account& account, double& initBalance, double& finalBalance, std::string initDate, std::string finalDate)
 {
+	std::vector<Transaction> transactions = account.getTransactions(true);
+	std::vector<Transaction> temp = account.getTransactions(false);
+	double debit = 0;
+	double credit = 0;
+	for (int i = 0; i < temp.size(); i++)
+	{
+		transactions.push_back(temp[i]);
+	}
+	std::sort(transactions.begin(), transactions.end());
+	std::cout << "Initial balance for " << initDate << " is ";
+	if (initBalance >= 0)
+	{
+		SetColor(GREEN, BLACK);
+	}
+	else
+	{
+		SetColor(RED, BLACK);
+	}
+	std::cout << initBalance;
+	SetColor(WHITE, BLACK);
+	std::cout << " " << account.getCurrency() << std::endl << std::endl;
+	std::cout << "------------------------------------------------" << std::endl;
+	SetColor(WHITE, BLACK);
+	std::cout << "Transactions:";
+	SetColor(GREEN, BLACK);
+	std::cout << "\t\t\tDebit";
+	SetColor(RED, BLACK);
+	std::cout << "\tCredit" << std::endl;
+	SetColor(WHITE, BLACK);
+	std::cout << "------------------------------------------------" << std::endl;
+	for (int i = 0; i < transactions.size(); i++)
+	{
+		std::cout << timeToString(transactions[i].getDate()) << " " << transactions[i].getName();
+		if (transactions[i].isIncome())
+		{
+			SetColor(GREEN, BLACK);
+			std::cout << "\t\t" << transactions[i].getAmount() << std::endl;
+			debit += transactions[i].getAmount();
+		}
+		else
+		{
+			SetColor(RED, BLACK);
+			std::cout << "\t\t\t" << transactions[i].getAmount() << std::endl;
+			credit += transactions[i].getAmount();
+		}
+		SetColor(WHITE, BLACK);
+	}
+	std::cout << "------------------------------------------------" << std::endl;
+	std::cout << "Total:\t\t\t\t";
+	SetColor(GREEN, BLACK);
+	std::cout << debit;
+	SetColor(RED, BLACK);
+	std::cout << '\t' << credit << std::endl;
+	SetColor(WHITE, BLACK);
+	std::cout << "------------------------------------------------" << std::endl;
+	std::cout << std::endl << "Final balance for " << finalDate << " is ";
+	if (finalBalance >= 0)
+	{
+		SetColor(GREEN, BLACK);
+	}
+	else
+	{
+		SetColor(RED, BLACK);
+	}
+	std::cout << finalBalance;
+	SetColor(WHITE, BLACK);
+	std::cout << " " << account.getCurrency() << std::endl << std::endl;
+}
 
+void Report::printCategoryReport(std::vector <ReportCategory> &results)
+{
+	std::cout << "Categories:\n";
+	for (int i = 0; i < results.size(); i++)
+	{
+		if (results[i].amount > 0)
+		{
+			if (results[i].isIncome)
+			{
+				SetColor(GREEN, BLACK);
+			}
+			else
+			{
+				SetColor(RED, BLACK);
+			}
+			std::cout << results[i].name << ": ";
+			SetColor(WHITE, BLACK);
+			std::cout << " total amount: " << results[i].amount << " " << results[i].currency << std::endl;
+		}
+	}
+	std::cout << std::endl;
 }
