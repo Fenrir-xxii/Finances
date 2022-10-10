@@ -84,13 +84,25 @@ public:
         endRow = rows > accountData.size() ? accountData.size() : rows;
         activeOption = 0;
     }
+    MultiPageMenu(std::vector<Transaction>& transactions, int rows)
+    {
+        for (int i = 0; i < transactions.size(); i++)
+        {
+            this->options.push_back(transactions[i].getName());
+        }
+        this->rows = rows > transactions.size() ? transactions.size() : rows;
+        beginRow = 0;
+        endRow = rows > transactions.size() ? transactions.size() : rows;
+        activeOption = 0;
+    }
 
     void drawFrame();
 	void drawFrame2();
     void drawFrame2(int cX, int cY);
     void drawOptions();
 	void drawOptions(std::vector < AccountData > &accountData);
-    void drawOptions(std::vector < Transaction >& transactions);
+    void drawOptions(std::vector < Transaction >& transactions, int rows);
+    void clearOptions(int rows);
     void down();
     void up();
 	int getSelectedOption() const;

@@ -3,6 +3,7 @@
 #include "Account.h"
 #include "Enum.h"
 #include "DataBase.h"
+#include "Report.h"
 
 //struct AccountData
 //{
@@ -17,6 +18,7 @@ private:
 	std::vector<Account> accounts;
 	DataBase dataBase;
 	fs::path accountPath = fs::current_path().string() + "\\DataBase\\Accounts\\";
+	Report report;
 public:
 	Finances()
 	{
@@ -26,4 +28,5 @@ public:
 
 	void showMainMenu();
 	void showMyAccounts();
+	void showReportMenu(Account& account);
 };

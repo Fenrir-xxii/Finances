@@ -29,7 +29,8 @@ void SetCursorPosition(short x, short y); //#include <Windows.h>
 
 enum Keys {
 	ESC = 27, ARROW_START = 224, ENTER = 13, SPACE = 32,
-	UP_ARROW = 72, DOWN_ARROW = 80, LEFT_ARROW = 75, RIGHT_ARROW = 77, TAB = 9
+	UP_ARROW = 72, DOWN_ARROW = 80, LEFT_ARROW = 75, RIGHT_ARROW = 77, TAB = 9,
+	CREATE_TRANSACTION_1 = 49
 };
 
 int getKey();

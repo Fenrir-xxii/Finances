@@ -309,61 +309,62 @@ void Report::printReport(Account& account, double& initBalance, double& finalBal
 		transactions.push_back(temp[i]);
 	}
 	std::sort(transactions.begin(), transactions.end());
+
+	int coordXDebit = 43;
+	int coordXCredit = 50;
+	std::string s1 = "Transactions:";
+	std::string s2 = "Debit";
+	std::string s3 = "Credit";
+	std::string s4 = "Total";
+	std::string s0((coordXCredit + s3.size()), '-');
+	int setWidthDebit = coordXDebit - s1.size();
+	int setWidthCredit = coordXCredit - coordXDebit + s2.length();
+	std::string date;
+	std::string name;
+
 	std::cout << "Initial balance for " << initDate << " is ";
-	if (initBalance >= 0)
-	{
-		SetColor(GREEN, BLACK);
-	}
-	else
-	{
-		SetColor(RED, BLACK);
-	}
+	SetColor(BLACK, GRAY);
 	std::cout << initBalance;
 	SetColor(WHITE, BLACK);
 	std::cout << " " << account.getCurrency() << std::endl << std::endl;
-	std::cout << "------------------------------------------------" << std::endl;
+	std::cout << s0 << std::endl;
 	SetColor(WHITE, BLACK);
-	std::cout << "Transactions:";
+	std::cout << s1 << std::right << std::setw(setWidthDebit);
 	SetColor(GREEN, BLACK);
-	std::cout << "\t\t\tDebit";
+	std::cout << s2 << std::right << std::setw(setWidthCredit);
 	SetColor(RED, BLACK);
-	std::cout << "\tCredit" << std::endl;
+	std::cout << s3 << std::endl;
 	SetColor(WHITE, BLACK);
-	std::cout << "------------------------------------------------" << std::endl;
+	std::cout << s0 << std::endl;
 	for (int i = 0; i < transactions.size(); i++)
 	{
-		std::cout << timeToString(transactions[i].getDate()) << " " << transactions[i].getName();
+		date = timeToString(transactions[i].getDate());
+		name = transactions[i].getName();
+		std::cout << date << " " << name;
 		if (transactions[i].isIncome())
 		{
 			SetColor(GREEN, BLACK);
-			std::cout << "\t\t" << transactions[i].getAmount() << std::endl;
+			std::cout << std::right << std::setw(coordXDebit - date.size() - name.size() - 1) << transactions[i].getAmount() << std::endl;
 			debit += transactions[i].getAmount();
 		}
 		else
 		{
 			SetColor(RED, BLACK);
-			std::cout << "\t\t\t" << transactions[i].getAmount() << std::endl;
+			std::cout << std::right << std::setw(coordXCredit - date.size() - name.size() - 1+ s2.size()) << transactions[i].getAmount() << std::endl;
 			credit += transactions[i].getAmount();
 		}
 		SetColor(WHITE, BLACK);
 	}
-	std::cout << "------------------------------------------------" << std::endl;
-	std::cout << "Total:\t\t\t\t";
+	std::cout << s0 << std::endl;
+	std::cout << s4 << std::right << std::setw(coordXDebit - s4.size());
 	SetColor(GREEN, BLACK);
-	std::cout << debit;
+	std::cout << debit << std::right << std::setw(coordXCredit - coordXDebit + s4.length());
 	SetColor(RED, BLACK);
-	std::cout << '\t' << credit << std::endl;
+	std::cout  << credit << std::endl;
 	SetColor(WHITE, BLACK);
-	std::cout << "------------------------------------------------" << std::endl;
+	std::cout << s0 << std::endl;
 	std::cout << std::endl << "Final balance for " << finalDate << " is ";
-	if (finalBalance >= 0)
-	{
-		SetColor(GREEN, BLACK);
-	}
-	else
-	{
-		SetColor(RED, BLACK);
-	}
+	SetColor(BLACK, GRAY);
 	std::cout << finalBalance;
 	SetColor(WHITE, BLACK);
 	std::cout << " " << account.getCurrency() << std::endl << std::endl;
