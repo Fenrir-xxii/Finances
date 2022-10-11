@@ -130,6 +130,7 @@ void Account::editTransaction(Transaction& transaction)
 				transaction.setName(newName);
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
+				system("cls");
 				menu.drawFrame();
 				menu.drawOptions();
 				
@@ -137,8 +138,11 @@ void Account::editTransaction(Transaction& transaction)
 			case 1:
 				std::cin >> newAmount;
 				transaction.setAmount(newAmount);
-				menu.drawTransaction(transaction);
+				system("cls");
+				//menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
+				menu.drawTransaction(transaction);
+				//system("cls");
 				menu.drawFrame();
 				menu.drawOptions();
 				break;
@@ -169,6 +173,7 @@ void Account::editTransaction(Transaction& transaction)
 						break;
 					case TAB:
 						leftActive = !leftActive;
+						break;
 					case ENTER:
 						//TODO
 						if (leftActive)
@@ -195,6 +200,7 @@ void Account::editTransaction(Transaction& transaction)
 				}
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
+				system("cls");
 				menu.drawFrame();
 				menu.drawOptions();
 				break;
@@ -203,6 +209,7 @@ void Account::editTransaction(Transaction& transaction)
 				transaction.setDate(fromString(newDate, "%d.%m.%Y"));
 				menu.drawTransaction(transaction);
 				menu.drawMessageFrame("Pick field you want to edit");
+				system("cls");
 				menu.drawFrame();
 				menu.drawOptions();
 				break;
@@ -319,5 +326,17 @@ std::vector<Transaction> Account::getTransactions(bool isIncome)
 	else
 	{
 		return this->credit;
+	}
+}
+
+Transaction& Account::getTransactionByIdx(int idx, bool isIncome)
+{
+	if (isIncome)
+	{
+		return this->debit[idx];
+	}
+	else
+	{
+		return this->credit[idx];
 	}
 }

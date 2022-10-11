@@ -37,7 +37,7 @@ void Menu::drawFrame()
 		{
 			if (x == 0 || x == widht - 1 || y == 0 || y == height - 1) {
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN_FADE);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
@@ -82,7 +82,7 @@ void Menu::drawFrame(int cX, int cY)
 		{
 			if (x == cX || x == widht - 1 || y == cY || y == height - 1) {
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
@@ -265,6 +265,31 @@ void Menu::drawMessageFrame(std::string message)
 
 }
 
+void Menu::drawMessageFrame(std::string message, int width, int height)
+{
+	system("cls");
+	SetCursorPosition(0, 0);
+	int maxWidth = message.length()+2;
+	maxWidth = maxWidth > width ? maxWidth : width;
+
+	for (size_t coordY = 0; coordY < height; coordY++)
+	{
+		for (size_t coordX = 0; coordX < maxWidth; coordX++)
+		{
+			if (coordX == 0 || coordX == maxWidth - 1 || coordY == 0 || coordY == height - 1)
+			{
+				SetCursorPosition(coordX, coordY);
+				SetColor(ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
+				std::cout << ' ';
+			}
+		}
+	}
+	SetCursorPosition(1, 0);
+	std::cout << message << std::endl;
+	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
+	SetCursorPosition(1, 2);
+}
+
 void Menu::down() 
 {
 	activeOption++;
@@ -332,7 +357,7 @@ void MultiPageMenu::drawFrame()
 			if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
@@ -351,7 +376,7 @@ void MultiPageMenu::drawFrame2()
 			if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
@@ -364,7 +389,7 @@ void MultiPageMenu::drawFrame2()
 			if (x == width - 25 or x == width - 7)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
@@ -384,7 +409,7 @@ void MultiPageMenu::drawFrame2(int cX, int cY)
 			if (x == cX || x == width - 1 || y == cY || y == height - 1)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}
@@ -393,7 +418,7 @@ void MultiPageMenu::drawFrame2(int cX, int cY)
 	for (size_t x = cX; x < width; x++)  // headers line (horizontal)
 	{
 		SetCursorPosition(x, cY+2);
-		SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+		SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 		std::cout << ' ';
 	}
 
@@ -404,7 +429,7 @@ void MultiPageMenu::drawFrame2(int cX, int cY)
 			if (x == cX+11 or x == cX + 41 or x == cX + 57 or x == width - 12)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GREEN);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
 				std::cout << ' ';
 			}
 		}

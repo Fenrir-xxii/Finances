@@ -44,6 +44,7 @@ public:
 	void sortTransactionsByDate();
 	bool compareDate(Transaction& transaction1, Transaction& transaction2);
 	std::vector<Transaction> getTransactions(bool isIncome);
+	Transaction& getTransactionByIdx(int idx, bool isIncome);
 	//void load();
 	//void save();
 

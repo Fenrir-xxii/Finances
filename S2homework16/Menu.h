@@ -45,6 +45,7 @@ public:
 	void setActiveOption(int idx);
 
 	void drawMessageFrame(std::string message);
+    void drawMessageFrame(std::string message, int width, int height);
 };
 
 

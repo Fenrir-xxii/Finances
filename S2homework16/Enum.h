@@ -10,6 +10,10 @@ enum REPORTS_MENU_OPTIONS
 	LAST_N_DAYS_REPORT = 0, MONTHLY_REPORT, CATEGORY_REPORT, N_BIGGEST_TRANSACTIONS, GO_BACK
 };
 
+enum YES_NO_MENU {
+	YES = 0, NO
+};
+
 struct AccountData
 {
 	std::string name;

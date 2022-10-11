@@ -248,6 +248,7 @@ void DataBase::loadAccounts(fs::path path, std::vector<Account>& accounts)
 		std::ifstream in(fullPath);
 		in >> account;
 		accounts.push_back(account);
+		accounts[i].sortTransactionsByDate();
 		in.close();
 	}
 }
