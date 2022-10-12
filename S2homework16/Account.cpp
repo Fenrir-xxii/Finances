@@ -47,7 +47,7 @@ void Account::removeTransaction(int idx, bool isIncome)
 	else
 	{
 		temp = credit[idx].getAmount();
-		credit.erase(debit.begin() + idx);
+		credit.erase(credit.begin() + idx);
 		this->balance += temp;
 	}
 }
@@ -128,29 +128,22 @@ void Account::editTransaction(Transaction& transaction)
 			case 0 :
 				std::getline(std::cin, newName);
 				transaction.setName(newName);
-				menu.drawTransaction(transaction);
-				menu.drawMessageFrame("Pick field you want to edit");
 				system("cls");
 				menu.drawFrame();
-				menu.drawOptions();
-				
+				menu.drawTransaction(transaction);
 				break;
 			case 1:
 				std::cin >> newAmount;
 				transaction.setAmount(newAmount);
 				system("cls");
-				//menu.drawTransaction(transaction);
-				menu.drawMessageFrame("Pick field you want to edit");
-				menu.drawTransaction(transaction);
-				//system("cls");
 				menu.drawFrame();
-				menu.drawOptions();
+				menu.drawTransaction(transaction);
 				break;
 			case 2:
 				system("cls");
-				menuCategoryExpenses.drawFrame("Expenses", true);
+				menuCategoryExpenses.drawFrame("Expenses", leftActive, ConsoleColor::RED_FADE);
 				menuCategoryExpenses.drawOptions();
-				menuCategoryIncome.drawFrame(maxWidth,0, "Income", false);
+				menuCategoryIncome.drawFrame(maxWidth,0, "Income", !leftActive, ConsoleColor::GREEN_FADE);
 				menuCategoryIncome.drawOptions(maxWidth,2);
 				while (work2)
 				{
@@ -159,16 +152,16 @@ void Account::editTransaction(Transaction& transaction)
 					{
 					case UP_ARROW:
 						leftActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
-						menuCategoryExpenses.drawFrame("Expenses", true);
+						//menuCategoryExpenses.drawFrame("Expenses", leftActive, ConsoleColor::RED_FADE);
 						menuCategoryExpenses.drawOptions();
-						menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+						//menuCategoryIncome.drawFrame(maxWidth, 0, "Income", !leftActive, ConsoleColor::GREEN_FADE);
 						menuCategoryIncome.drawOptions(maxWidth, 2);
 						break;
 					case DOWN_ARROW:
 						leftActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
-						menuCategoryExpenses.drawFrame("Expenses", true);
+						//menuCategoryExpenses.drawFrame("Expenses", leftActive, ConsoleColor::RED_FADE);
 						menuCategoryExpenses.drawOptions();
-						menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+						//menuCategoryIncome.drawFrame(maxWidth, 0, "Income", !leftActive, ConsoleColor::GREEN_FADE);
 						menuCategoryIncome.drawOptions(maxWidth, 2);
 						break;
 					case TAB:
@@ -187,7 +180,7 @@ void Account::editTransaction(Transaction& transaction)
 						{
 							num = menuCategoryIncome.getSelectedOption();
 							//transaction.setCategory(dataBase.getCategoryByName(categoryNamesIncome[num], true));
-							transaction.setCategory(transaction.getCategoryByName(categoryNamesExpenses[num], true));
+							transaction.setCategory(transaction.getCategoryByName(categoryNamesIncome[num], true));
 							work2 = false;
 						}
 						system("cls");
@@ -198,20 +191,20 @@ void Account::editTransaction(Transaction& transaction)
 						break;
 					}
 				}
-				menu.drawTransaction(transaction);
-				menu.drawMessageFrame("Pick field you want to edit");
+				//menu.drawTransaction(transaction);
+				//menu.drawMessageFrame("Pick field you want to edit");
 				system("cls");
 				menu.drawFrame();
-				menu.drawOptions();
+				menu.drawTransaction(transaction);
 				break;
 			case 3:
 				std::cin >> newDate;
 				transaction.setDate(fromString(newDate, "%d.%m.%Y"));
-				menu.drawTransaction(transaction);
-				menu.drawMessageFrame("Pick field you want to edit");
+				//menu.drawTransaction(transaction);
+				//menu.drawMessageFrame("Pick field you want to edit");
 				system("cls");
 				menu.drawFrame();
-				menu.drawOptions();
+				menu.drawTransaction(transaction);
 				break;
 			}
 			break;

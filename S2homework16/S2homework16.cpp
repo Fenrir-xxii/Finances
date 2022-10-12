@@ -19,10 +19,10 @@ void ShowConsoleCursor(bool showFlag)
 int main()
 {
     ShowConsoleCursor(false);
-    
+    DataBase dataBase;
     Finances finances;
     finances.showMainMenu();
-
+    dataBase.saveAll();
 }
 
 int main1()

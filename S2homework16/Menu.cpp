@@ -116,6 +116,31 @@ void Menu::drawFrame(std::string header, bool active)
 	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
 }
 
+void Menu::drawFrame(std::string header, bool active, ConsoleColor color)
+{
+	size_t headerSize = header.size() + 2;
+	size_t width = getFrameWidth();
+	size_t maxWidth = (width > headerSize) ? width : headerSize;
+	size_t height = getFrameHeight();
+
+	for (size_t y = 0; y < height; y++)
+	{
+		for (size_t x = 0; x < maxWidth; x++)
+		{
+			if (x == 0 || x == maxWidth - 1 || y == 0 || y == height - 1)
+			{
+				SetCursorPosition(x, y);
+				active ? SetColor(ConsoleColor::WHITE, color) : SetColor(ConsoleColor::WHITE, color + 8);
+				std::cout << ' ';
+			}
+		}
+	}
+	SetCursorPosition(1, 0);
+	active ? SetColor(ConsoleColor::WHITE, color) : SetColor(ConsoleColor::WHITE, color + 8);
+	std::cout << header;
+	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
+}
+
 void Menu::drawFrame(int cX, int cY, std::string header, bool active)
 {
 	size_t headerSize = header.size() + 2;
@@ -137,6 +162,31 @@ void Menu::drawFrame(int cX, int cY, std::string header, bool active)
 	}
 	SetCursorPosition(cX+1, 0);
 	active ? SetColor(ConsoleColor::WHITE, ConsoleColor::BLUE) : SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+	std::cout << header;
+	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
+}
+
+void Menu::drawFrame(int cX, int cY, std::string header, bool active, ConsoleColor color)
+{
+	size_t headerSize = header.size() + 2;
+	size_t width = getFrameWidth() + cX;
+	size_t maxWidth = (width > headerSize) ? width : headerSize;
+	size_t height = getFrameHeight() + cY;
+
+	for (size_t y = cY; y < height; y++)
+	{
+		for (size_t x = cX; x < maxWidth; x++)
+		{
+			if (x == cX || x == maxWidth - 1 || y == cY || y == height - 1)
+			{
+				SetCursorPosition(x, y);
+				active ? SetColor(ConsoleColor::WHITE, color) : SetColor(ConsoleColor::WHITE, color+8);
+				std::cout << ' ';
+			}
+		}
+	}
+	SetCursorPosition(cX + 1, 0);
+	active ? SetColor(ConsoleColor::WHITE, color) : SetColor(ConsoleColor::WHITE, color + 8);
 	std::cout << header;
 	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
 }
@@ -263,6 +313,29 @@ void Menu::drawMessageFrame(std::string message)
 	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
 	SetCursorPosition(1, 2);
 
+}
+
+void Menu::drawMessageFrame(std::string message, ConsoleColor color)
+{
+	system("cls");
+	SetCursorPosition(0, 0);
+
+	for (size_t coordY = 0; coordY < 10; coordY++)
+	{
+		for (size_t coordX = 0; coordX < 50; coordX++)
+		{
+			if (coordX == 0 || coordX == 50 - 1 || coordY == 0 || coordY == 10 - 1)
+			{
+				SetCursorPosition(coordX, coordY);
+				SetColor(ConsoleColor::WHITE, color);
+				std::cout << ' ';
+			}
+		}
+	}
+	SetCursorPosition(1, 0);
+	std::cout << message << std::endl;
+	SetColor(ConsoleColor::WHITE, ConsoleColor::BLACK);
+	SetCursorPosition(1, 2);
 }
 
 void Menu::drawMessageFrame(std::string message, int width, int height)

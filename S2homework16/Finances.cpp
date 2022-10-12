@@ -101,6 +101,7 @@ void Finances::showMyAccounts()
     bool work2 = true;
     bool isIncome = true;
     bool leftActive = true;
+    bool accountChosen = false;
     int num = 0;
     std::string temp;
     Transaction newTransaction;
@@ -137,6 +138,7 @@ void Finances::showMyAccounts()
                 transactions = getAllTransactions(this->accounts[selection]);
                 menu2.clearOptions(15);
                 menu2.drawOptions(transactions,15);
+                accountChosen = true;
             }
             else
             {
@@ -153,123 +155,158 @@ void Finances::showMyAccounts()
             break;
         case CREATE_TRANSACTION_1:
             system("cls");
-            selection = menu.getSelectedOption();
-            text.drawMessageFrame("Create new transaction?", 5, 6);
-            yesNo.drawOptions(2, 2);
-            do
+            if (accountChosen)
             {
-                key = getKey();
-                switch (key)
+                //system("cls");
+                selection = menu.getSelectedOption();
+                text.drawMessageFrame("Create new transaction?", 5, 6);
+                yesNo.drawOptions(2, 2);
+                work = true;
+                do
                 {
-                case UP_ARROW:
-                    yesNo.up();
-                    yesNo.drawOptions(2, 2);
-                    break;
-                case DOWN_ARROW:
-                    yesNo.down();
-                    yesNo.drawOptions(2, 2);
-                    break;
-                case ENTER:
-                    num = yesNo.getSelectedOption();
-                    if (num == YES_NO_MENU::YES)
+                    //std::cin.ignore(256, '\n');
+                    key = getKey();
+                    switch (key)
                     {
-                        text.drawMessageFrame("Enter transaction's description");
-                        std::getline(std::cin, temp);
-                        newTransaction.setName(temp);
-                        text.drawMessageFrame("Enter transaction's amount");
-                        std::cin >> newAmount;
-                        newTransaction.setAmount(newAmount);
-
-                        system("cls");
-                        menuCategoryExpenses.drawFrame("Expenses", true);
-                        menuCategoryExpenses.drawOptions();
-                        menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
-                        menuCategoryIncome.drawOptions(maxWidth, 2);
-                        key = 0;
-                        while (work2)
+                    case UP_ARROW:
+                        yesNo.up();
+                        yesNo.drawOptions(2, 2);
+                        break;
+                    case DOWN_ARROW:
+                        yesNo.down();
+                        yesNo.drawOptions(2, 2);
+                        break;
+                    case ENTER:
+                        num = yesNo.getSelectedOption();
+                        if (num == YES_NO_MENU::YES)
                         {
-                            key = getKey();
-                            switch (key)
-                            {
-                            case UP_ARROW:
-                                leftActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
-                                menuCategoryExpenses.drawFrame("Expenses", true);
-                                menuCategoryExpenses.drawOptions();
-                                menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
-                                menuCategoryIncome.drawOptions(maxWidth, 2);
-                                break;
-                            case DOWN_ARROW:
-                                leftActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
-                                menuCategoryExpenses.drawFrame("Expenses", true);
-                                menuCategoryExpenses.drawOptions();
-                                menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
-                                menuCategoryIncome.drawOptions(maxWidth, 2);
-                                break;
-                            case TAB:
-                                leftActive = !leftActive;
-                                break;
-                            case ENTER:
-                                //TODO
-                                if (leftActive)
-                                {
-                                    num = menuCategoryExpenses.getSelectedOption();
-                                    newTransaction.setCategory(newTransaction.getCategoryByName(categoryNamesExpenses[num], false));
-                                    work2 = false;
-                                }
-                                else
-                                {
-                                    num = menuCategoryIncome.getSelectedOption();
-                                    newTransaction.setCategory(newTransaction.getCategoryByName(categoryNamesExpenses[num], true));
-                                    work2 = false;
-                                }
-                                system("cls");
-                                break;
-                            case ESC:
-                                system("cls");
-                                work2 = false;
-                                break;
-                            }
-                        }
-                        text.drawMessageFrame("Enter transaction's date (dd.mm.yyyy)");
-                        std::cin >> temp;
-                        system("cls");
-                        newTransaction.setDate(fromString(temp, "%d.%m.%Y"));
-                        this->accounts[selection].addTransaction(newTransaction);
-                        transactions.push_back(newTransaction);
-                        std::sort(transactions.begin(), transactions.end());
-                        menu2.clearOptions(15);
-                        menu2.drawOptions(transactions, 15);
-                    }
-                    else if (num == YES_NO_MENU::NO)
-                    {
-                        work = false;
-                    }
-                    system("cls");
-                    work = false;
-                    break;
-                default:
-                    break;
-                }
+                            text.drawMessageFrame("Enter transaction's description");
+                            std::getline(std::cin, temp);
+                            newTransaction.setName(temp);
+                            text.drawMessageFrame("Enter transaction's amount");
+                            std::cin >> newAmount;
+                            newTransaction.setAmount(newAmount);
 
-            } while (work);
+                            system("cls");
+                            menuCategoryExpenses.drawFrame("Expenses", true);
+                            menuCategoryExpenses.drawOptions();
+                            menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                            menuCategoryIncome.drawOptions(maxWidth, 2);
+                            key = 0;
+                            while (work2)
+                            {
+                                key = getKey();
+                                switch (key)
+                                {
+                                case UP_ARROW:
+                                    leftActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
+                                    menuCategoryExpenses.drawFrame("Expenses", true);
+                                    menuCategoryExpenses.drawOptions();
+                                    menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                                    menuCategoryIncome.drawOptions(maxWidth, 2);
+                                    break;
+                                case DOWN_ARROW:
+                                    leftActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
+                                    menuCategoryExpenses.drawFrame("Expenses", true);
+                                    menuCategoryExpenses.drawOptions();
+                                    menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                                    menuCategoryIncome.drawOptions(maxWidth, 2);
+                                    break;
+                                case TAB:
+                                    leftActive = !leftActive;
+                                    break;
+                                case ENTER:
+                                    if (leftActive)
+                                    {
+                                        num = menuCategoryExpenses.getSelectedOption();
+                                        newTransaction.setCategory(newTransaction.getCategoryByName(categoryNamesExpenses[num], false));
+                                        work2 = false;
+                                    }
+                                    else
+                                    {
+                                        num = menuCategoryIncome.getSelectedOption();
+                                        newTransaction.setCategory(newTransaction.getCategoryByName(categoryNamesExpenses[num], true));
+                                        work2 = false;
+                                    }
+                                    system("cls");
+                                    break;
+                                case ESC:
+                                    system("cls");
+                                    work2 = false;
+                                    break;
+                                }
+                            }
+                            text.drawMessageFrame("Enter transaction's date (dd.mm.yyyy)");
+                            std::cin >> temp;
+                            system("cls");
+                            newTransaction.setDate(fromString(temp, "%d.%m.%Y"));
+                            this->accounts[selection].addTransaction(newTransaction);
+                            transactions.push_back(newTransaction);
+                            std::sort(transactions.begin(), transactions.end());
+                            menu2.clearOptions(15);
+                            menu2.drawOptions(transactions, 15);
+                        }
+                        else if (num == YES_NO_MENU::NO)
+                        {
+                            work = false;
+                        }
+                        system("cls");
+                        //work = false;
+                        break;
+                    default:
+                        break;
+                    }
+
+                } while (work);
+            }
+            else
+            {
+                text.drawMessageFrame("Pick an account first!\n", ConsoleColor::RED_FADE);
+                system("pause");
+                system("cls");
+            }
             break;
         case EDIT_TRANSACTION_2:
             system("cls");
             // EDIT METHOD editTransaction()
-
-            //selection = menu.getSelectedOption();
-            selection2 = menu2.getSelectedOption();
-            isIncome = transactions[selection2].isIncome();
-            //newTransaction = this->accounts[selection].getTransactionByIdx(selection2, isIncome);
-            this->accounts[selection].editTransaction(this->accounts[selection].getTransactionByIdx(selection2, isIncome));
-            // edit in transactions
-            // create method to push debit and credit transactions into transactions vector
-            //transactions[selection2] = this->accounts[selection].getTransactionByIdx(selection2, isIncome);
-            transactions = getAllTransactions(this->accounts[selection]);
+            if (accountChosen)
+            {
+                selection2 = menu2.getSelectedOption();
+                isIncome = transactions[selection2].isIncome();
+                //newTransaction = this->accounts[selection].getTransactionByIdx(selection2, isIncome);
+                this->accounts[selection].editTransaction(this->accounts[selection].getTransactionByIdx(selection2, isIncome));
+                transactions = getAllTransactions(this->accounts[selection]);
+                system("cls");
+                menu2.clearOptions(15);
+                menu2.drawOptions(transactions, 15);
+            }
+            else
+            {
+                text.drawMessageFrame("Pick an account first!\n", ConsoleColor::RED_FADE);
+                system("pause");
+                system("cls");
+            }
+            break;
+        case DELETE_TRANSACTION_3:
             system("cls");
-            //std::sort(transactions.begin(), transactions.end());
-            menu2.clearOptions(15);
-            menu2.drawOptions(transactions, 15);
+            if (accountChosen)
+            {
+                selection2 = menu2.getSelectedOption();
+                isIncome = transactions[selection2].isIncome();
+                this->accounts[selection].removeTransaction(selection2, isIncome);
+                transactions = getAllTransactions(this->accounts[selection]);
+                system("cls");
+                menu2.clearOptions(15);
+                menu2.drawOptions(transactions, 15);
+
+            }
+            else
+            {
+                text.drawMessageFrame("Pick an account first!\n", ConsoleColor::RED_FADE);
+                system("pause");
+                system("cls");
+            }
+
             break;
         case ESC:
             system("cls");

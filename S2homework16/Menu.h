@@ -26,7 +26,11 @@ public:
 
 	void drawFrame(std::string header, bool active);
 
-	void drawFrame(int cX, int xY, std::string header, bool active);
+    void drawFrame(std::string header, bool active, ConsoleColor color);
+
+	void drawFrame(int cX, int cY, std::string header, bool active);
+
+    void drawFrame(int cX, int cY, std::string header, bool active, ConsoleColor color);
 
 	void drawOptions();
 
@@ -45,6 +49,7 @@ public:
 	void setActiveOption(int idx);
 
 	void drawMessageFrame(std::string message);
+    void drawMessageFrame(std::string message, ConsoleColor color);
     void drawMessageFrame(std::string message, int width, int height);
 };
 
