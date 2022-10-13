@@ -29,5 +29,7 @@ public:
 	void showMainMenu();
 	void showMyAccounts();
 	void showReportMenu(Account& account);
+	void showOptions();
 	std::vector<Transaction> getAllTransactions(Account& account);
+	std::vector <AccountData> getAllAccountsData();
 };

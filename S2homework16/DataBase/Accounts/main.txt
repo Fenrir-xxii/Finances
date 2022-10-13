@@ -10,6 +10,13 @@ Salary
 Salary
 07.10.2022
 
+1245.99
+6
+Shoping
+0
+Jacket
+01.09.2022
+
 203.5
 6
 Food
@@ -23,11 +30,4 @@ Food
 0
 Juice
 10.10.2022
-
-1245.99
-6
-Shoping
-0
-Jacket
-01.09.2022
 

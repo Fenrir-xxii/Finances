@@ -391,7 +391,13 @@ void Menu::setActiveOption(int idx)
 	activeOption = idx;
 }
 
-
+void Menu::drawText(int cX, int cY, std::string text, ConsoleColor textColor, ConsoleColor backgroundColor)
+{
+	SetCursorPosition(cX, cY);
+	SetColor(textColor, backgroundColor);
+	std::cout << text;
+	SetColor(WHITE, BLACK);
+}
 
 
 
@@ -569,28 +575,32 @@ void MultiPageMenu::drawOptions(std::vector < AccountData > &accountData)
 		auto item = accountData[i].name;
 		item.append(std::string(max - item.size(), ' '));
 		std::cout << item;
+		SetCursorPosition(56, startY + (i - beginRow));
+		std::cout << std::fixed << std::setprecision(2) << std::right << std::setw(16) << accountData[i].balance;
+		SetCursorPosition(74, startY + (i - beginRow));
+		std::cout << accountData[i].currency;
 	}
 	SetColor(WHITE, BLACK);
 
-	for (size_t i = beginRow; i < endRow; i++)
-	{
-		SetCursorPosition(56, i+1);
-		//std::cout << accountData[i].balance;
-		std::cout << std::fixed << std::setprecision(2) << std::right << std::setw(16) << accountData[i].balance;
-		SetCursorPosition(74, i+1);
-		std::cout << accountData[i].currency;
-	}
+	//for (size_t i = beginRow; i < endRow; i++)
+	//{
+	//	SetCursorPosition(56, i+1);
+	//	//std::cout << accountData[i].balance;
+	//	std::cout << std::fixed << std::setprecision(2) << std::right << std::setw(16) << accountData[i].balance;
+	//	SetCursorPosition(74, i+1);
+	//	std::cout << accountData[i].currency;
+	//}
 	std::cout << std::endl;
 
 }
 
 void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions, int rows)
 {
-	this->rows = rows > transactions.size() ? transactions.size() : rows;
-	//beginRow = 0;
-	endRow = rows > transactions.size() ? transactions.size() : rows;
+	//this->rows = rows > transactions.size() ? transactions.size() : rows;
+	////beginRow = 0;
+	//endRow = rows > transactions.size() ? transactions.size() : rows;
 	//activeOption = 0;
-	this->options.clear();
+	//this->options.clear();
 	for (int y = 0; y < transactions.size(); y++)
 	{
 		this->options.push_back(transactions[y].getName());
@@ -617,7 +627,7 @@ void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions, int r
 	int debitCoordX = 58;
 	int creditCoordX = 69;*/
 	//clearOptions(transactions, rows);
-
+	//endRow++;
 	for (size_t i = beginRow; i < endRow; i++)
 	{
 		/*if (i >= transactions.size())
@@ -653,36 +663,51 @@ void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions, int r
 			case 0:
 				item = timeToString(transactions[i].getDate());
 				//item.append(std::string(max - item.size(), ' '));
+				//std::cout << std::string(item.length(), ' ');
 				std::cout << item;
 				break;
 			case 1:
 				item = transactions[i].getName();
 				max = 29;
 				item.append(std::string(max - item.size(), ' '));
+				//std::cout << std::string(item.length(), ' ');
 				std::cout << item;
 				break;
 			case 2:
 				item = transactions[i].getCategory()->getName();
 				max = 15;
 				item.append(std::string(max - item.size(), ' '));
+				//std::cout << std::string(item.length(), ' ');
 				std::cout << item;
 				break;
 			case 3:
 				if (transactions[i].isIncome())
 				{
 					SetColor(GREEN, BLACK);
+					//std::cout << std::string(9, ' ');
+					//SetCursorPosition(arrCoordX[j], startY + (i - beginRow));
 					tempAmount = floor(transactions[i].getAmount() * 100) / 100;
 					std::cout <<  std::right << std::setw(10) << std::fixed << std::setprecision(2) << tempAmount;
 					SetColor(WHITE, BLACK);
+				}
+				else
+				{
+					std::cout << std::string(10, ' ');
 				}
 				break;
 			case 4:
 				if (!transactions[i].isIncome())
 				{
 					SetColor(RED, BLACK);
+					//std::cout << std::string(9, ' ');
+					//SetCursorPosition(arrCoordX[j], startY + (i - beginRow));
 					tempAmount = floor(transactions[i].getAmount() * 100) / 100;
 					std::cout << std::right << std::setw(10) << std::fixed << std::setprecision(2) << tempAmount;
 					SetColor(WHITE, BLACK);
+				}
+				else
+				{
+					std::cout << std::string(10, ' ');
 				}
 				break;
 

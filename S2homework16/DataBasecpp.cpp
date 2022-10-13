@@ -37,7 +37,7 @@ void DataBase::addCategory(std::string name, bool isIncome)
 	{
 		for (int i = 0; i < categoriesIncome.size(); i++)
 		{
-			if (newCat == categoriesIncome[i]) 
+			if (newCat == categoriesIncome[i])
 			{
 				--lastId;
 				return;
@@ -59,7 +59,7 @@ void DataBase::addCategory(std::string name, bool isIncome)
 	}
 }
 
-void DataBase::loadCategories(fs::path path, std::vector<Category> &categories)
+void DataBase::loadCategories(fs::path path, std::vector<Category>& categories)
 {
 	categories.clear();
 	std::ifstream in(path);
@@ -95,7 +95,7 @@ void DataBase::loadTransactions(fs::path path, std::vector<Transaction>& transac
 	in.close();
 }
 
-void DataBase::saveCategories(fs::path path, std::vector<Category> &categories)
+void DataBase::saveCategories(fs::path path, std::vector<Category>& categories)
 {
 	std::ofstream out(path);
 	out << categories.size() << std::endl;
@@ -140,6 +140,11 @@ std::vector<std::string> DataBase::getCategoryNames(bool isIncome)
 	return names;
 }
 
+std::vector<std::string> DataBase::getCurrency()
+{
+	return this->currency;
+}
+
 Category& DataBase::getCategoryById(int id)
 {
 	for (int i = 0; i < this->categoriesIncome.size(); i++)
@@ -163,8 +168,9 @@ void DataBase::saveAll()
 {
 	saveCategories(categoryIncomePath, categoriesIncome);
 	saveCategories(categoryExpensesPath, categoriesExpenses);
-	saveTransactions(transactionPath, transactions);
+	//saveTransactions(transactionPath, transactions);
 	saveAccounts(accountPath, accounts);
+	saveCurrency(currencyPath, currency);
 }
 
 Category& DataBase::getCategoryByName(std::string name, bool isIncome)
@@ -193,17 +199,17 @@ Category& DataBase::getCategoryByName(std::string name, bool isIncome)
 	return categoriesExpenses[0]; // ??
 }
 
-void DataBase::addTransaction(Transaction& transaction)
-{
-	for (int i = 0; i < transactions.size(); i++)
-	{
-		if (transaction == transactions[i])
-		{
-			return;
-		}
-	}
-	this->transactions.push_back(transaction);
-}
+//void DataBase::addTransaction(Transaction& transaction)
+//{
+//	for (int i = 0; i < transactions.size(); i++)
+//	{
+//		if (transaction == transactions[i])
+//		{
+//			return;
+//		}
+//	}
+//	this->transactions.push_back(transaction);
+//}
 
 
 void DataBase::saveAccounts(fs::path path, std::vector<Account>& account)
@@ -220,6 +226,22 @@ void DataBase::saveAccounts(fs::path path, std::vector<Account>& account)
 		ofs << account[i];
 		ofs.close();
 	}
+	fs::current_path(mainPath);
+}
+
+void DataBase::saveAccount(Account& account)
+{
+	fs::path mainPath = fs::current_path();
+	fs::path p = this->accountPath;
+	fs::current_path(p);
+
+	std::string name = account.getName() + ".txt";
+	p /= name;
+	std::ofstream ofs;
+	ofs.open(name, std::ios::out);
+	ofs << account;
+	ofs.close();
+
 	fs::current_path(mainPath);
 }
 
@@ -263,4 +285,52 @@ void DataBase::addAccount(Account& account)
 		}
 	}
 	this->accounts.push_back(account);
+}
+
+void DataBase::loadCurrency(fs::path path, std::vector<std::string>& currency)
+{
+	currency.clear();
+	std::ifstream in(path);
+	std::string text;
+
+	if (in.is_open())
+	{
+		while (getline(in, text))
+		{
+			currency.push_back(text);
+		}
+		in.close();
+	}
+	else
+	{
+		std::cout << "Unable to open file" << std::endl;
+	}
+
+}
+
+void DataBase::saveCurrency(fs::path path, std::vector<std::string>& currency)
+{
+	std::ofstream out(path);
+	for (int i = 0; i < currency.size(); i++)
+	{
+		out << currency[i] << std::endl;
+	}
+	out.close();
+}
+
+void DataBase::addCurrency(std::string currency)
+{
+	for (int i = 0; i < this->currency.size(); i++)
+	{
+		if (this->currency[i] == currency)
+		{
+			return;
+		}
+	}
+	this->currency.push_back(currency);
+}
+
+void DataBase::updateAccounts(std::vector<Account>& accounts)
+{
+	this->accounts = accounts;
 }

@@ -19,10 +19,26 @@ void ShowConsoleCursor(bool showFlag)
 int main()
 {
     ShowConsoleCursor(false);
-    DataBase dataBase;
+    //DataBase dataBase;
     Finances finances;
     finances.showMainMenu();
+    //dataBase.saveAll();
+
+
+    return 0;
+}
+
+int main4()
+{
+    ShowConsoleCursor(false);
+    DataBase dataBase;
+    dataBase.addCurrency("UAH");
+    dataBase.addCurrency("EUR");
+    dataBase.addCurrency("USD");
+    dataBase.addCurrency("UAH");
     dataBase.saveAll();
+
+    return 0;
 }
 
 int main1()

@@ -51,6 +51,7 @@ public:
 	void drawMessageFrame(std::string message);
     void drawMessageFrame(std::string message, ConsoleColor color);
     void drawMessageFrame(std::string message, int width, int height);
+    void drawText(int cX, int cY, std::string text, ConsoleColor textColor, ConsoleColor backgroundColor);
 };
 
 
@@ -101,6 +102,14 @@ public:
         endRow = rows > transactions.size() ? transactions.size() : rows;
         activeOption = 0;
     }
+    MultiPageMenu(MultiPageMenu& m)
+    {
+        this->options = m.options;
+        this->activeOption = m.activeOption;
+        this->beginRow = m.beginRow;
+        this->endRow = m.endRow;
+        this->rows = m.rows;
+    }
 
     void drawFrame();
 	void drawFrame2();
@@ -112,4 +121,15 @@ public:
     void down();
     void up();
 	int getSelectedOption() const;
+
+    MultiPageMenu& operator=(MultiPageMenu& m)
+    {
+        this->options = m.options;
+        this->activeOption = m.activeOption;
+        this->beginRow = m.beginRow;
+        this->endRow = m.endRow;
+        this->rows = m.rows;
+        return *this;
+    }
+
 };
