@@ -1,9 +1,9 @@
 testAcc
 EUR
-476.21
-4
-13
-130
+574.36
+3
+16
+120
 2
 Salary
 1
@@ -11,9 +11,9 @@ freelance task
 01.08.2022
 
 5
-2
-Salary
-1
+3
+Fuel
+0
 gasoline
 20.09.2022
 
@@ -24,13 +24,6 @@ Salary
 salary
 30.09.2022
 
-200
-5
-Sales
-1
-some income
-10.10.2022
-
 150
 4
 Shoping
@@ -39,8 +32,8 @@ NAS Synology
 22.01.2022
 
 2.8
-6
-Subscription
+1
+Food
 0
 tomatoes
 01.03.2022
@@ -51,13 +44,6 @@ Food
 0
 coffee
 02.06.2022
-
-12
-3
-Fuel
-0
-gasoline
-04.06.2022
 
 80
 4
@@ -70,15 +56,8 @@ trackball
 6
 Subscription
 0
-temp
+megogo
 12.07.2022
-
-0.85
-1
-Food
-0
-tea
-02.09.2022
 
 110
 4
@@ -87,14 +66,14 @@ Shoping
 monitor
 03.09.2022
 
-32
+170.5
 4
 Shoping
 0
-some
+DAC
 10.09.2022
 
-75.2
+80.2
 4
 Shoping
 0
@@ -109,16 +88,51 @@ deezer
 01.10.2022
 
 15.9
-4
-Shoping
+3
+Fuel
 0
 diesel
 02.10.2022
 
-120
+88.5
+5
+Sales
+1
+keyboard
+09.10.2022
+
+2.2
+1
+Food
+0
+bread
+13.10.2022
+
+1.2
+1
+Food
+0
+butter
+13.10.2022
+
+2
+1
+Food
+0
+pop corn
+13.10.2022
+
+6
 4
 Shoping
 0
-keyboard
-09.10.2022
+wallet
+14.10.2022
+
+100
+3
+Fuel
+0
+TEMP
+10.10.2022
 

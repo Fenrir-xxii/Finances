@@ -16,7 +16,7 @@ void ShowConsoleCursor(bool showFlag)
     SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-int main()
+int main5()
 {
     ShowConsoleCursor(false);
     //DataBase dataBase;
@@ -28,15 +28,18 @@ int main()
     return 0;
 }
 
-int main4()
+int main()
 {
     ShowConsoleCursor(false);
-    DataBase dataBase;
+  /*  DataBase dataBase;
     dataBase.addCurrency("UAH");
     dataBase.addCurrency("EUR");
     dataBase.addCurrency("USD");
     dataBase.addCurrency("UAH");
-    dataBase.saveAll();
+    dataBase.saveAll();*/
+
+    Finances fin;
+    fin.showAddNewCategoryMenu();
 
     return 0;
 }

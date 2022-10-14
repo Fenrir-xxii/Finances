@@ -30,6 +30,8 @@ public:
 	void showMyAccounts();
 	void showReportMenu(Account& account);
 	void showOptions();
+	void showAddNewCategoryMenu();
 	std::vector<Transaction> getAllTransactions(Account& account);
 	std::vector <AccountData> getAllAccountsData();
+	//int getIdxOfTransaction(bool isIncome);
 };

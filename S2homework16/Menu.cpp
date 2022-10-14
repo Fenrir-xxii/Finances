@@ -601,10 +601,10 @@ void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions, int r
 	//endRow = rows > transactions.size() ? transactions.size() : rows;
 	//activeOption = 0;
 	//this->options.clear();
-	for (int y = 0; y < transactions.size(); y++)
+	/*for (int y = 0; y < transactions.size(); y++)
 	{
 		this->options.push_back(transactions[y].getName());
-	}
+	}*/
 	
 	SetCursorPosition(1, 5);
 	std::cout << "date";
@@ -692,6 +692,7 @@ void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions, int r
 				}
 				else
 				{
+					SetColor(WHITE, BLACK);
 					std::cout << std::string(10, ' ');
 				}
 				break;
@@ -707,6 +708,7 @@ void MultiPageMenu::drawOptions(std::vector < Transaction >& transactions, int r
 				}
 				else
 				{
+					SetColor(WHITE, BLACK);
 					std::cout << std::string(10, ' ');
 				}
 				break;

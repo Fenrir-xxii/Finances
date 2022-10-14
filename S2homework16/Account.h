@@ -36,7 +36,7 @@ public:
 	void setBalance(double balance);
 	void addTransaction(Transaction& transaction);
 	void removeTransaction(int idx, bool isIncome);
-	void editTransaction(Transaction& transaction);
+	void editTransaction(Transaction& transaction, int idx);
 	void editDebitTransaction(int idx);
 	void editCreditTransaction(int idx);
 	std::vector<std::string> getCategoryNames(bool isIncome);

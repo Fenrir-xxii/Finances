@@ -74,7 +74,7 @@ std::vector<std::string> Account::getCategoryNames(bool isIncome)
 	return categoryNames;
 }
 
-void Account::editTransaction(Transaction& transaction)
+void Account::editTransaction(Transaction& transaction, int idx)
 {
 	//menu
 	std::vector<std::string> options;
@@ -82,6 +82,11 @@ void Account::editTransaction(Transaction& transaction)
 	//std::vector<std::string> categoryNamesExpenses = dataBase.getCategoryNames(false);
 	std::vector<std::string> categoryNamesIncome = getCategoryNames(true);
 	std::vector<std::string> categoryNamesExpenses = getCategoryNames(false);
+
+	double amountBeforeEdit = transaction.getAmount();
+	double amountAfterEdit = transaction.getAmount();
+	bool isIncomeBeforeEdit = transaction.isIncome();
+	bool isIncomeAfterEdit = transaction.isIncome();
 
 	int maxWidth = 0;
 	for (int i = 0; i < categoryNamesExpenses.size(); i++)
@@ -135,6 +140,7 @@ void Account::editTransaction(Transaction& transaction)
 			case 1:
 				std::cin >> newAmount;
 				transaction.setAmount(newAmount);
+				amountAfterEdit = newAmount;
 				system("cls");
 				menu.drawFrame();
 				menu.drawTransaction(transaction);
@@ -216,6 +222,34 @@ void Account::editTransaction(Transaction& transaction)
 
 	} while (work);
 
+	isIncomeAfterEdit = transaction.isIncome();
+	if (isIncomeBeforeEdit != isIncomeAfterEdit)
+	{
+		if (!isIncomeAfterEdit)
+		{
+			this->balance -= (amountBeforeEdit + amountAfterEdit);
+			this->credit.push_back(transaction);
+			this->debit.erase(debit.begin() + idx);
+		}
+		else
+		{
+			this->balance += (amountBeforeEdit + amountAfterEdit);
+			this->debit.push_back(transaction);
+			this->credit.erase(credit.begin() + idx);
+		}
+	}
+	else if (amountBeforeEdit != amountAfterEdit)
+	{
+		if (!transaction.isIncome())
+		{
+			this->balance += (amountBeforeEdit - amountAfterEdit);
+		}
+		else
+		{
+			this->balance -= (amountBeforeEdit - amountAfterEdit);
+		}
+	}
+
 }
 
 void Account::editDebitTransaction(int idx)
@@ -225,7 +259,7 @@ void Account::editDebitTransaction(int idx)
 		return;
 	}
 
-	editTransaction(debit[idx]);
+	editTransaction(debit[idx], idx);
 }
 
 void Account::editCreditTransaction(int idx)
@@ -235,7 +269,7 @@ void Account::editCreditTransaction(int idx)
 		return;
 	}
 
-	editTransaction(credit[idx]);
+	editTransaction(credit[idx], idx);
 }
 
 //void Account::save()
