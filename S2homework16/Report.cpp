@@ -360,23 +360,62 @@ void Report::printReport(Account& account, double& initBalance, double& finalBal
 
 void Report::printCategoryReport(std::vector <ReportCategory> &results)
 {
-	std::cout << "Categories:\n";
-	for (int i = 0; i < results.size(); i++)
+	double totalIncome = 0;
+	double totalExpenses = 0;
+	for (int j = 0; j < results.size(); j++)
 	{
-		if (results[i].amount > 0)
+		if (results[j].isIncome)
 		{
-			if (results[i].isIncome)
-			{
-				SetColor(GREEN, BLACK);
-			}
-			else
-			{
-				SetColor(RED, BLACK);
-			}
-			std::cout << results[i].name << ": ";
-			SetColor(WHITE, BLACK);
-			std::cout << " total amount: " << results[i].amount << " " << results[i].currency << std::endl;
+			totalIncome += results[j].amount;
+		}
+		else
+		{
+			totalExpenses += results[j].amount;
 		}
 	}
+
+	int size = 0;
+
+	SetColor(BLACK, GRAY);
+	std::cout << "Income Categories:\n";
+	SetColor(WHITE, BLACK);
+	for (int i = 0; i < results.size(); i++)
+	{
+		if (results[i].amount > 0 and results[i].isIncome)
+		{
+			size = results[i].amount / totalIncome * 100;
+			std::cout << results[i].name << ":\n";
+			SetColor(BLACK, GREEN_FADE);
+			std::cout << std::string(size, ' ');
+			SetColor(WHITE, BLACK);
+			std::cout << " " << size << "%" << std::endl;
+			std::cout << "Amount: " << results[i].amount << " " << results[i].currency << std::endl << std::endl;
+		}
+	}
+	SetColor(BLACK, GRAY);
+	std::cout << "TOTAL INCOME: " << totalIncome << " " << results[0].currency << std::endl;
+	SetColor(WHITE, BLACK);
+	std::cout << std::endl;
+	std::cout << std::string(100, '-') << std::endl << std::endl;
+
+	SetColor(BLACK, GRAY);
+	std::cout << "Expenses Categories:\n";
+	SetColor(WHITE, BLACK);
+	for (int i = 0; i < results.size(); i++)
+	{
+		if (results[i].amount > 0 and !results[i].isIncome)
+		{
+			size = results[i].amount / totalExpenses * 100;
+			std::cout << results[i].name << ":\n";
+			SetColor(BLACK, RED_FADE);
+			std::cout << std::string(size, ' ');
+			SetColor(WHITE, BLACK);
+			std::cout << " " << size << "%" << std::endl;
+			std::cout << "Amount: " << results[i].amount << " " << results[i].currency << std::endl << std::endl;
+		}
+	}
+	SetColor(BLACK, GRAY);
+	std::cout << "TOTAL EXPENSES: " << totalExpenses << " " << results[0].currency << std::endl;
+	SetColor(WHITE, BLACK);
 	std::cout << std::endl;
 }

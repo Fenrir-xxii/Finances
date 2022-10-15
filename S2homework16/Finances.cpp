@@ -864,6 +864,23 @@ void Finances::showAddNewCategoryMenu()
 void Finances::removeAccount(int idx)
 {
     // move file to folder Archive
+    std::string accName = this->accounts[idx].getName() + ".txt";
 
+    fs::path archive = fs::current_path().string() + "\\DataBase\\Archive\\Accounts\\" + accName;
+    fs::path source = fs::current_path().string() + "\\DataBase\\Accounts\\" + accName;
+
+    try
+    {
+        if (fs::exists(source) and !(fs::exists(archive)))
+        {
+            fs::rename(source, archive);
+        }
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what();
+    }
+
+    this->accounts.erase(accounts.begin() + idx);
 
 }
