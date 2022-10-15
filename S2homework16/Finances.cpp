@@ -2,7 +2,7 @@
 
 void Finances::showMainMenu()
 {
-    std::vector<std::string> mainMenuOptions({ "My Accounts", "Account Settings", "Exit" });
+    std::vector<std::string> mainMenuOptions({ "My Accounts", "Finances Settings", "Exit" });
     Menu menu(mainMenuOptions);
     int key = -1;
     int selection = -1;
@@ -28,7 +28,7 @@ void Finances::showMainMenu()
                 system("cls");
                 showMyAccounts();
             }
-            else if (selection == MAIN_MENU_OPTIONS::ACCOUNT_OPTIONS)
+            else if (selection == MAIN_MENU_OPTIONS::FINANCES_OPTIONS)
             {
                 system("cls");
                 showOptions();
@@ -65,7 +65,6 @@ void Finances::showMyAccounts()
     transactionMenu.drawFrame2(0, 4);
     transactionMenu.drawOptions(transactions, multiMenuSize);
     Menu text;
-    //std::vector <std::string> v({ "Yes", "No" });
     Menu yesNo({ "Yes", "No" });
 
     std::vector<std::string> categoryNamesIncome = this->dataBase.getCategoryNames(true);
@@ -82,8 +81,6 @@ void Finances::showMyAccounts()
     }
     maxWidth += 6;
 
-    //Transaction t(200.88, this->dataBase.getCategoryByName("Shoping", false), "Hat", std::chrono::system_clock::now()); // delete
-
     int key = -1;
     int accountSelection = -1;
     int transactionSelection = -1;
@@ -93,6 +90,8 @@ void Finances::showMyAccounts()
     bool isIncome = true;
     bool menuCategoryExpensesActive = true;
     bool accountChosen = false;
+    bool isDateValid = false;
+    bool correctValue = false;
     int num = 0;
     int indexOfTransaction = -1;
     std::string temp;
@@ -124,7 +123,7 @@ void Finances::showMyAccounts()
                 accountSelection = accountMenu.getSelectedOption();
                 activeAcc = accountData[accountSelection].name + " chosen";
                 accountMenu.drawFrame2();
-                text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::GRAY);
+                text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
                 transactions.clear();
 
                 transactionsExpenses = this->accounts[accountSelection].getTransactions(false);
@@ -143,6 +142,11 @@ void Finances::showMyAccounts()
         case SPACE:  // report menu
             accountSelection = accountMenu.getSelectedOption();
             showReportMenu(this->accounts[accountSelection]);
+            accountMenu.drawFrame2();
+            accountMenu.drawOptions(accountData);
+            transactionMenu.drawFrame2(0, 4);
+            text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
+            transactionMenu.drawOptions(transactions, multiMenuSize);
             break;
         case CREATE_TRANSACTION_1:
             system("cls");
@@ -172,15 +176,36 @@ void Finances::showMyAccounts()
                             text.drawMessageFrame("Enter transaction's description");
                             std::getline(std::cin, temp);
                             newTransaction.setName(temp);
-                            text.drawMessageFrame("Enter transaction's amount");
+
+                            do
+                            {
+                                text.drawMessageFrame("Enter transaction's amount");
+                                std::cin >> newAmount;
+                                if (std::cin.fail())
+                                {
+                                    correctValue = false;
+                                }
+                                else
+                                {
+                                    correctValue = true;
+                                }
+                                std::cin.clear();
+                                std::cin.ignore(1000, '\n');
+                            }while (!correctValue);
+
+                            /*text.drawMessageFrame("Enter transaction's amount");
                             std::cin >> newAmount;
-                            std::cin.ignore(256, '\n');
+                            std::cin.ignore(256, '\n');*/
                             newTransaction.setAmount(newAmount);
 
                             system("cls");
-                            menuCategoryExpenses.drawFrame("Expenses", true);
+                            /*menuCategoryExpenses.drawFrame("Expenses", true);
                             menuCategoryExpenses.drawOptions();
                             menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                            menuCategoryIncome.drawOptions(maxWidth, 2);*/
+                            menuCategoryExpenses.drawFrame("Expenses", true, ConsoleColor::RED_FADE);
+                            menuCategoryExpenses.drawOptions();
+                            menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false, ConsoleColor::GREEN_FADE);
                             menuCategoryIncome.drawOptions(maxWidth, 2);
                             key = 0;
                             choosingCategory = true;
@@ -191,16 +216,16 @@ void Finances::showMyAccounts()
                                 {
                                 case UP_ARROW:
                                     menuCategoryExpensesActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
-                                    menuCategoryExpenses.drawFrame("Expenses", true);
+                                    //menuCategoryExpenses.drawFrame("Expenses", true);
                                     menuCategoryExpenses.drawOptions();
-                                    menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                                    //menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
                                     menuCategoryIncome.drawOptions(maxWidth, 2);
                                     break;
                                 case DOWN_ARROW:
                                     menuCategoryExpensesActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
-                                    menuCategoryExpenses.drawFrame("Expenses", true);
+                                    //menuCategoryExpenses.drawFrame("Expenses", true);
                                     menuCategoryExpenses.drawOptions();
-                                    menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                                    //menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
                                     menuCategoryIncome.drawOptions(maxWidth, 2);
                                     break;
                                 case TAB:
@@ -210,16 +235,35 @@ void Finances::showMyAccounts()
                                     if (menuCategoryExpensesActive)
                                     {
                                         num = menuCategoryExpenses.getSelectedOption();
+                                        newTransaction.updateCategories(this->dataBase.getCategories(true), this->dataBase.getCategories(false));
                                         newTransaction.setCategory(newTransaction.getCategoryByName(categoryNamesExpenses[num], false));
                                         choosingCategory = false;
                                     }
                                     else
                                     {
                                         num = menuCategoryIncome.getSelectedOption();
+                                        newTransaction.updateCategories(this->dataBase.getCategories(true), this->dataBase.getCategories(false));
                                         newTransaction.setCategory(newTransaction.getCategoryByName(categoryNamesIncome[num], true));
                                         choosingCategory = false;
                                     }
                                     system("cls");
+                                    break;
+                                case CREATE_CATEGORY:  // key 'c'
+                                {
+                                    showAddNewCategoryMenu();
+                                    system("cls");
+                                    newTransaction.updateCategories(this->dataBase.getCategories(true), this->dataBase.getCategories(false));
+                                    categoryNamesIncome = this->dataBase.getCategoryNames(true);
+                                    categoryNamesExpenses = this->dataBase.getCategoryNames(false);
+                                    Menu temp(categoryNamesIncome);
+                                    menuCategoryIncome = temp;
+                                    Menu temp2(categoryNamesExpenses);
+                                    menuCategoryExpenses = temp2;
+                                    menuCategoryExpenses.drawFrame("Expenses", true);
+                                    menuCategoryExpenses.drawOptions();
+                                    menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+                                    menuCategoryIncome.drawOptions(maxWidth, 2);
+                                }
                                     break;
                                 case ESC:
                                     system("cls");
@@ -227,11 +271,24 @@ void Finances::showMyAccounts()
                                     break;
                                 }
                             }
-                            text.drawMessageFrame("Enter transaction's date (dd.mm.yyyy)");
-                            std::cin >> temp;
-                            std::cin.ignore(256, '\n');
-                            system("cls");
-                            newTransaction.setDate(fromString(temp, "%d.%m.%Y"));
+                            do
+                            {
+                                text.drawMessageFrame("Enter transaction's date (dd.mm.yyyy)");
+                                std::cin >> temp;
+                                std::cin.ignore(256, '\n');
+                                system("cls");
+                                try
+                                {
+                                    newTransaction.setDate(fromString(temp, "%d.%m.%Y"));
+                                    isDateValid = true;
+                                }
+                                catch (const char* e)
+                                {
+                                    system("cls");
+                                    std::cout << e << std::endl << "Try again" << std::endl;
+                                    system("pause");
+                                }
+                            } while (!isDateValid);
                             this->accounts[accountSelection].addTransaction(newTransaction);
                             transactions.push_back(newTransaction);
                             std::sort(transactions.begin(), transactions.end());
@@ -265,7 +322,7 @@ void Finances::showMyAccounts()
             /*MultiPageMenu temp(transactions, multiMenuSize);
             transactionMenu = temp;*/
             transactionMenu.drawFrame2(0, 4);
-            text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::GRAY);
+            text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
             transactionMenu.drawOptions(transactions, multiMenuSize);
             break;
         case EDIT_TRANSACTION_2:
@@ -316,7 +373,7 @@ void Finances::showMyAccounts()
                 accountMenu.drawOptions(accountData);
                 transactionMenu.clearOptions(multiMenuSize);
                 transactionMenu.drawFrame2(0, 4);
-                text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::GRAY);
+                text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
                 transactionMenu.drawOptions(transactions, multiMenuSize);
             }
             else
@@ -369,7 +426,7 @@ void Finances::showMyAccounts()
                 transactionMenu = temp;
                 transactionMenu.clearOptions(multiMenuSize);
                 transactionMenu.drawFrame2(0, 4);
-                text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::GRAY);
+                text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
                 transactionMenu.drawOptions(transactions, multiMenuSize);
                 //accountData = getAllAccountsData();
             }
@@ -394,8 +451,12 @@ void Finances::showReportMenu(Account& account)
 {
     std::vector<std::string> reportMenuOptions({ "Last N days report", "Monthly report", "Category report", "N biggest transactions", "Go Back"});
     Menu menu(reportMenuOptions);
+    Menu text;
+    int number = 0;
     int key = -1;
     int selection = -1;
+    bool correctValue = false;
+    bool correctMonth = false;
     system("cls");
 
     while (key != ESC)
@@ -417,26 +478,98 @@ void Finances::showReportMenu(Account& account)
             system("cls");
             if (selection == REPORTS_MENU_OPTIONS::LAST_N_DAYS_REPORT)
             {
-                this->report.showLastNDaysReport(account, 30);
+                do
+                {
+                    text.drawMessageFrame("Enter number of days for report");
+                    std::cin >> number;
+                    if (std::cin.fail())
+                    {
+                        correctValue = false;
+                    }
+                    else
+                    {
+                        correctValue = true;
+                    }
+                    std::cin.clear();
+                    std::cin.ignore(1000, '\n');
+                } while (!correctValue);
+                system("cls");
+                this->report.showLastNDaysReport(account, number);
+                system("pause");
             }
             else if (selection == REPORTS_MENU_OPTIONS::MONTHLY_REPORT)
             {
-                this->report.showMonthlyReport(account, 10);
+                do
+                {
+                    text.drawMessageFrame("Enter number of month (1 - Jan., 12 - Dec.)");
+                    std::cin >> number;
+                    correctMonth = number > 0 and number < 13;
+                    if (std::cin.fail())
+                    {
+                        correctValue = false;
+                    }
+                    else
+                    {
+                        correctValue = true;
+                    }
+                    std::cin.clear();
+                    std::cin.ignore(1000, '\n');
+                } while (!correctValue or !correctMonth);
+                system("cls");
+                this->report.showMonthlyReport(account, number);
+                system("pause");
             }
             else if (selection == REPORTS_MENU_OPTIONS::CATEGORY_REPORT)
             {
-                this->report.showTransactionsByCategory(account, 10);
+                do
+                {
+                    text.drawMessageFrame("Enter number of month (1 - Jan., 12 - Dec.)");
+                    std::cin >> number;
+                    correctMonth = number > 0 and number < 13;
+                    if (std::cin.fail())
+                    {
+                        correctValue = false;
+                    }
+                    else
+                    {
+                        correctValue = true;
+                    }
+                    std::cin.clear();
+                    std::cin.ignore(1000, '\n');
+                } while (!correctValue or !correctMonth);
+                system("cls");
+                this->report.showTransactionsByCategory(account, number);
+                system("pause");
             }
             else if (selection == REPORTS_MENU_OPTIONS::N_BIGGEST_TRANSACTIONS)
             {
-                this->report.showNBiggestTransactions(account, 3 ,false);
+                do
+                {
+                    text.drawMessageFrame("Enter quantity of operations to show");
+                    std::cin >> number;
+                    correctMonth = number > 0;
+                    if (std::cin.fail())
+                    {
+                        correctValue = false;
+                    }
+                    else
+                    {
+                        correctValue = true;
+                    }
+                    std::cin.clear();
+                    std::cin.ignore(1000, '\n');
+                } while (!correctValue or !correctMonth);
+                system("cls");
+                this->report.showNBiggestTransactions(account, number, false);
+                this->report.showNBiggestTransactions(account, number, true);
+                system("pause");
             }
             else if (selection == REPORTS_MENU_OPTIONS::GO_BACK)
             {
                 system("cls");
                 key = ESC;
             }
-            system("pause");
+            //system("pause");
             system("cls");
             break;
         case ESC:
@@ -450,14 +583,21 @@ void Finances::showReportMenu(Account& account)
 
 void Finances::showOptions()
 {
-    std::vector<std::string> settingsMenuOptions({ "Open new account", "Close account", "Return" });
+    std::vector<std::string> settingsMenuOptions({ "Open new account", "Close account", "Create new category", "Return"});
     Menu menu(settingsMenuOptions);
     Menu text;
     Menu yesNo({ "Yes", "No" });
     std::vector<std::string> currencyNames = this->dataBase.getCurrency();
     Menu currencyMenu(currencyNames);
+    std::vector<std::string> accountNames;
+    for (int i = 0; i < this->accounts.size(); i++)
+    {
+        accountNames.push_back(this->accounts[i].getName());
+    }
+    Menu accounts(accountNames);
     bool openingAccount = true;
     bool choosingCurrency = true;
+    bool choosingAccount = true;
     int num = -1;
     int key = -1;
     int selection = -1;
@@ -480,7 +620,7 @@ void Finances::showOptions()
             break;
         case ENTER:
             selection = menu.getSelectedOption();
-            if (selection == ACCOUNT_SETTINGS_OPTIONS::CREATE)
+            if (selection == FINANCES_SETTINGS_OPTIONS::CREATE_ACCOUNT)
             {
                 system("cls");
                 text.drawMessageFrame("Do You want to open a new account?", 5, 6);
@@ -552,11 +692,45 @@ void Finances::showOptions()
 
                 } while (openingAccount);
             }
-            else if (selection == ACCOUNT_SETTINGS_OPTIONS::REMOVE)
+            else if (selection == FINANCES_SETTINGS_OPTIONS::REMOVE_ACCOUNT)
             {
-
+                //TO DO
+                system("cls");
+                accounts.drawFrame();
+                accounts.drawOptions();
+                key = 0;
+                while (choosingAccount)
+                {
+                    key = getKey();
+                    switch (key)
+                    {
+                    case UP_ARROW:
+                        accounts.up();
+                        accounts.drawOptions();
+                        break;
+                    case DOWN_ARROW:
+                        accounts.down();
+                        accounts.drawOptions();
+                        break;
+                    case ENTER:
+                        num = accounts.getSelectedOption();
+                        removeAccount(num);
+                        system("cls");
+                        return;
+                    case ESC:
+                        system("cls");
+                        choosingAccount = false;
+                        break;
+                    }
+                }
             }
-            else if (selection == ACCOUNT_SETTINGS_OPTIONS::RETURN)
+            else if (selection == FINANCES_SETTINGS_OPTIONS::ADD_CATEGORY)
+            {
+                system("cls");
+                showAddNewCategoryMenu();
+                system("cls");
+            }
+            else if (selection == FINANCES_SETTINGS_OPTIONS::RETURN)
             {
                 system("cls");
                 return;
@@ -687,9 +861,9 @@ void Finances::showAddNewCategoryMenu()
     } while (addingCategory);
 }
 
+void Finances::removeAccount(int idx)
+{
+    // move file to folder Archive
 
 
-//int Finances::getIdxOfTransaction(bool isIncome)
-//{
-//
-//}
+}

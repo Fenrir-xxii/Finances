@@ -7,19 +7,7 @@ bool reportCategorySort(ReportCategory& rp1, ReportCategory& rp2)
 
 bool compareTransaction(Transaction& t1, Transaction& t2)
 {
-	
 	return t1.getAmount() > t2.getAmount();
-	
-	
-	/*switch (option)
-	{
-	case 0:
-		return t1.getAmount() > t2.getAmount();
-	case 1:
-		return t1.getDate() > t2.getDate();
-	dafault:
-		break;
-	}*/
 }
 
 void Report::showMonthlyReport(Account& account, int month)

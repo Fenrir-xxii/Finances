@@ -50,6 +50,7 @@ public:
 	std::chrono::time_point<std::chrono::system_clock> getDate();
 	Category* getCategory();
 	bool isIncome();
+	void updateCategories(std::vector<Category> categoriesIncome, std::vector<Category> categoriesExpenses);
 
 	friend std::ofstream& operator <<(std::ofstream& out, Transaction& transaction)
 	{

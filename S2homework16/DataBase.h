@@ -40,6 +40,7 @@ public:
 	std::vector<std::string> getCurrency();
 	Category& getCategoryByName(std::string name, bool isIncome);
 	Category& getCategoryById(int id);
+	std::vector<Category> getCategories(bool isIncome);
 	//void addTransaction(Transaction& transaction);
 	void addAccount(Account& account);
 	void loadCategories(fs::path path, std::vector<Category> &categories);

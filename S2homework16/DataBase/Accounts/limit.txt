@@ -1,13 +1,20 @@
 limit
 UAH
-51.7
-1
-1
+-148.3
+2
+2
 80
 5
 Sales
 1
 macropad
+11.10.2022
+
+100
+8
+TEST
+1
+temp
 11.10.2022
 
 28.3
@@ -16,4 +23,11 @@ Food
 0
 corn
 12.10.2022
+
+300
+9
+Books
+0
+Sherlock Holmes by A.C.Doyle
+14.10.2022
 

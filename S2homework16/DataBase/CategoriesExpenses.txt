@@ -1,4 +1,4 @@
-4
+6
 1
 Food
 0
@@ -10,4 +10,10 @@ Shoping
 0
 6
 Subscription
+0
+7
+Space
+0
+9
+Books
 0

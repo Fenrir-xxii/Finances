@@ -63,6 +63,9 @@ void Transaction::loadCategories(fs::path path, std::vector<Category>& categorie
 
 Category& Transaction::getCategoryByName(std::string name, bool isIncome)
 {
+	/*loadCategories(categoryIncomePath, categoriesIncome);
+	loadCategories(categoryExpensesPath, categoriesExpenses);*/
+	
 	if (isIncome)
 	{
 		for (int i = 0; i < this->categoriesIncome.size(); i++)
@@ -84,4 +87,10 @@ Category& Transaction::getCategoryByName(std::string name, bool isIncome)
 			}
 		}
 	}
+}
+
+void Transaction::updateCategories(std::vector<Category> categoriesIncome, std::vector<Category> categoriesExpenses)
+{
+	this->categoriesIncome = categoriesIncome;
+	this->categoriesExpenses = categoriesExpenses;
 }

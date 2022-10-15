@@ -37,7 +37,7 @@ void Menu::drawFrame()
 		{
 			if (x == 0 || x == widht - 1 || y == 0 || y == height - 1) {
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::TEAL_FADE);
 				std::cout << ' ';
 			}
 		}
@@ -436,7 +436,7 @@ void MultiPageMenu::drawFrame()
 			if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::YELLOW_FADE);
 				std::cout << ' ';
 			}
 		}
@@ -455,7 +455,7 @@ void MultiPageMenu::drawFrame2()
 			if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::YELLOW_FADE);
 				std::cout << ' ';
 			}
 		}
@@ -468,7 +468,7 @@ void MultiPageMenu::drawFrame2()
 			if (x == width - 25 or x == width - 7)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::YELLOW_FADE);
 				std::cout << ' ';
 			}
 		}
@@ -488,7 +488,7 @@ void MultiPageMenu::drawFrame2(int cX, int cY)
 			if (x == cX || x == width - 1 || y == cY || y == height - 1)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::YELLOW_FADE);
 				std::cout << ' ';
 			}
 		}
@@ -497,7 +497,7 @@ void MultiPageMenu::drawFrame2(int cX, int cY)
 	for (size_t x = cX; x < width; x++)  // headers line (horizontal)
 	{
 		SetCursorPosition(x, cY+2);
-		SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+		SetColor(ConsoleColor::WHITE, ConsoleColor::YELLOW_FADE);
 		std::cout << ' ';
 	}
 
@@ -508,13 +508,33 @@ void MultiPageMenu::drawFrame2(int cX, int cY)
 			if (x == cX+11 or x == cX + 41 or x == cX + 57 or x == width - 12)
 			{
 				SetCursorPosition(x, y);
-				SetColor(ConsoleColor::WHITE, ConsoleColor::GRAY);
+				SetColor(ConsoleColor::WHITE, ConsoleColor::YELLOW_FADE);
 				std::cout << ' ';
 			}
 		}
 	}
 	
-
+	int coordY = 1;
+	SetCursorPosition(width + 2, coordY++);
+	SetColor(TEAL_FADE, BLACK);
+	std::cout << "1 - Create\n";
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "new trasnaction\n";
+	coordY++;
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "2 - Edit\n";
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "trasnaction\n";
+	coordY++;
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "3 - Delete\n";
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "trasnaction\n";
+	coordY++;
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "SPACE - Show\n";
+	SetCursorPosition(width + 2, coordY++);
+	std::cout << "reports\n";
 	SetColor(WHITE, BLACK);
 }
 

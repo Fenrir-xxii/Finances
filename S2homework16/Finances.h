@@ -31,6 +31,7 @@ public:
 	void showReportMenu(Account& account);
 	void showOptions();
 	void showAddNewCategoryMenu();
+	void removeAccount(int idx);
 	std::vector<Transaction> getAllTransactions(Account& account);
 	std::vector <AccountData> getAllAccountsData();
 	//int getIdxOfTransaction(bool isIncome);

@@ -1,8 +1,8 @@
 testAcc
 EUR
-574.36
+552.36
 3
-16
+17
 120
 2
 Salary
@@ -10,19 +10,19 @@ Salary
 freelance task
 01.08.2022
 
-5
-3
-Fuel
-0
-gasoline
-20.09.2022
-
 750
 2
 Salary
 1
 salary
 30.09.2022
+
+88.5
+5
+Sales
+1
+keyboard
+09.10.2022
 
 150
 4
@@ -73,6 +73,13 @@ Shoping
 DAC
 10.09.2022
 
+5
+3
+Fuel
+0
+gasoline
+20.09.2022
+
 80.2
 4
 Shoping
@@ -94,12 +101,12 @@ Fuel
 diesel
 02.10.2022
 
-88.5
-5
-Sales
-1
-keyboard
-09.10.2022
+100
+3
+Fuel
+0
+TEMP
+10.10.2022
 
 2.2
 1
@@ -129,10 +136,10 @@ Shoping
 wallet
 14.10.2022
 
-100
-3
-Fuel
+22
+1
+Food
 0
-TEMP
-10.10.2022
+time
+14.10.2022
 

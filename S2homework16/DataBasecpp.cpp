@@ -334,3 +334,15 @@ void DataBase::updateAccounts(std::vector<Account>& accounts)
 {
 	this->accounts = accounts;
 }
+
+std::vector<Category> DataBase::getCategories(bool isIncome)
+{
+	if (isIncome)
+	{
+		return this->categoriesIncome;
+	}
+	else
+	{
+		return this->categoriesExpenses;
+	}
+}

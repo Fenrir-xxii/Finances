@@ -74,7 +74,7 @@ std::vector<std::string> Account::getCategoryNames(bool isIncome)
 	return categoryNames;
 }
 
-void Account::editTransaction(Transaction& transaction, int idx)
+void Account::editTransaction(Transaction& transaction, int idx)		// привести в порядок 
 {
 	//menu
 	std::vector<std::string> options;
@@ -106,6 +106,8 @@ void Account::editTransaction(Transaction& transaction, int idx)
 	bool work = true;
 	bool work2 = true;
 	bool leftActive = true;
+	bool isDateValid = false;
+	bool correctValue = false;
 	std::string newName;
 	std::string newDate;
 	double newAmount = 0;
@@ -138,7 +140,24 @@ void Account::editTransaction(Transaction& transaction, int idx)
 				menu.drawTransaction(transaction);
 				break;
 			case 1:
-				std::cin >> newAmount;
+				do
+				{
+					menu.drawMessageFrame("Enter new parameter");
+					std::cin >> newAmount;
+					if (std::cin.fail())
+					{
+						correctValue = false;
+					}
+					else
+					{
+						correctValue = true;
+					}
+					std::cin.clear();
+					std::cin.ignore(1000, '\n');
+
+				} while (!correctValue);
+				
+				//std::cin >> newAmount;
 				transaction.setAmount(newAmount);
 				amountAfterEdit = newAmount;
 				system("cls");
@@ -191,6 +210,23 @@ void Account::editTransaction(Transaction& transaction, int idx)
 						}
 						system("cls");
 						break;
+					case CREATE_CATEGORY:  // key 'c'
+					{
+						////showAddNewCategoryMenu();
+						//system("cls");
+						////transaction.updateCategories(this->dataBase.getCategories(true), this->dataBase.getCategories(false));
+						//categoryNamesIncome = this->dataBase.getCategoryNames(true);
+						//categoryNamesExpenses = this->dataBase.getCategoryNames(false);
+						//Menu temp(categoryNamesIncome);
+						//menuCategoryIncome = temp;
+						//Menu temp2(categoryNamesExpenses);
+						//menuCategoryExpenses = temp2;
+						//menuCategoryExpenses.drawFrame("Expenses", true);
+						//menuCategoryExpenses.drawOptions();
+						//menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
+						//menuCategoryIncome.drawOptions(maxWidth, 2);
+					}
+					break;
 					case ESC:
 						system("cls");
 						work2 = false;
@@ -204,8 +240,24 @@ void Account::editTransaction(Transaction& transaction, int idx)
 				menu.drawTransaction(transaction);
 				break;
 			case 3:
-				std::cin >> newDate;
-				transaction.setDate(fromString(newDate, "%d.%m.%Y"));
+				do
+				{
+					menu.drawMessageFrame("Enter new parameter");
+					std::cin >> newDate;
+					try
+					{
+						transaction.setDate(fromString(newDate, "%d.%m.%Y"));
+						isDateValid = true;
+					}
+					catch (const char* e)
+					{
+						system("cls");
+						std::cout << e << std::endl << "Try again" << std::endl;
+						system("pause");
+					}
+				} while (!isDateValid);
+				//std::cin >> newDate;
+				//transaction.setDate(fromString(newDate, "%d.%m.%Y"));
 				//menu.drawTransaction(transaction);
 				//menu.drawMessageFrame("Pick field you want to edit");
 				system("cls");
@@ -271,11 +323,6 @@ void Account::editCreditTransaction(int idx)
 
 	editTransaction(credit[idx], idx);
 }
-
-//void Account::save()
-//{
-//
-//}
 
 std::string Account::getName()
 {

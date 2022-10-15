@@ -16,7 +16,7 @@ void ShowConsoleCursor(bool showFlag)
     SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-int main5()
+int main()
 {
     ShowConsoleCursor(false);
     //DataBase dataBase;
@@ -28,7 +28,7 @@ int main5()
     return 0;
 }
 
-int main()
+int main5()
 {
     ShowConsoleCursor(false);
   /*  DataBase dataBase;
