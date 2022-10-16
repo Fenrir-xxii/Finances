@@ -1,5 +1,4 @@
 #pragma once
-//#include "Category.h"
 #include <fstream>
 #include <filesystem>
 #include "Category.h"
@@ -13,7 +12,6 @@ class DataBase
 private:
 	std::vector<Category> categoriesIncome;
 	std::vector<Category> categoriesExpenses;
-	//std::vector<Transaction> transactions;  // temp, should be Account
 	std::vector<Account> accounts;
 	std::vector<std::string> currency;
 	fs::path categoryIncomePath = fs::current_path().string() + "\\DataBase\\CategoriesIncome.txt";
@@ -27,12 +25,10 @@ public:
 	{
 		loadCategories(categoryIncomePath, categoriesIncome);
 		loadCategories(categoryExpensesPath, categoriesExpenses);
-		//loadTransactions(transactionPath, transactions);
 		loadAccounts(accountPath, accounts);
 		loadCurrency(currencyPath, currency);
 	}
 	
-	//void init();
 	void addCategory(Category &category);
 	void addCategory(std::string name, bool isIncome);
 	void removeCategory(Category &category);
@@ -41,7 +37,6 @@ public:
 	Category& getCategoryByName(std::string name, bool isIncome);
 	Category& getCategoryById(int id);
 	std::vector<Category> getCategories(bool isIncome);
-	//void addTransaction(Transaction& transaction);
 	void addAccount(Account& account);
 	void loadCategories(fs::path path, std::vector<Category> &categories);
 	void saveCategories(fs::path path, std::vector<Category> &categories);

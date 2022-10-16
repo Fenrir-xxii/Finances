@@ -30,7 +30,7 @@
     <ClCompile Include="Category.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataBasecpp.cpp">
+    <ClCompile Include="DataBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Account.cpp">

@@ -131,7 +131,7 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="Category.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="DataBasecpp.cpp" />
+    <ClCompile Include="DataBase.cpp" />
     <ClCompile Include="Finances.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Report.cpp" />

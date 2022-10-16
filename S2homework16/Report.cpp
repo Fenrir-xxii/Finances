@@ -26,7 +26,6 @@ void Report::showMonthlyReport(Account& account, int month)
 	std::string date = "01." + strMonth + ".2022";
 
 	auto tp = fromString(date, "%d.%m.%Y");
-	//std::chrono::system_clock::time_point timeNow = std::chrono::system_clock::now();
 
 	auto dp = floor<std::chrono::days>(tp);
 	std::chrono::year_month_day ymd{ dp };
@@ -118,7 +117,6 @@ void Report::showLastNDaysReport(Account& account, int nDays)
 	printReport(temp, initialBalance, finalBalance, timeStartString, timeEndString);
 
 	//std::cout << temp << std::endl;
-
 }
 
 void Report::showTransactionsByCategory(Account& account, int month)
@@ -161,7 +159,6 @@ void Report::showTransactionsByCategory(Account& account, int month)
 			if (m2 == m)
 			{
 				Category* c = debit[i].getCategory();
-				//std::shared_ptr<Category> c = std::make_shared<>;
 				if ((*c) == categoriesIncome[cat])
 				{
 					sum += debit[i].getAmount();
@@ -186,7 +183,6 @@ void Report::showTransactionsByCategory(Account& account, int month)
 			if (m2 == m)
 			{
 				Category* c = credit[i].getCategory();
-				//std::shared_ptr<Category> c;
 				if ((*c) == categoriesExpenses[cat])
 				{
 					sum += credit[i].getAmount();

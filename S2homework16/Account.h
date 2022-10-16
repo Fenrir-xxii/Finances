@@ -3,7 +3,6 @@
 #include "Transaction.h"
 #include "menu.h"
 #include <filesystem>
-//#include "DataBase.h"
 
 namespace fs = std::filesystem;
 
@@ -16,7 +15,6 @@ private:
 	std::string currency;
 	std::vector<Transaction> debit;
 	std::vector<Transaction> credit;
-	//DataBase dataBase;
 public:
 	Account() {};
 	Account(std::string name, double balance, std::string currency)
@@ -26,8 +24,6 @@ public:
 		this->currency = currency;
 	}
 
-	//std::string timeToString(std::chrono::system_clock::time_point tp);
-	//std::chrono::system_clock::time_point fromString(const std::string& dateStr, const std::string& format);
 	std::string getName();
 	std::string getCurrency();
 	double getBalance();
@@ -45,8 +41,6 @@ public:
 	bool compareDate(Transaction& transaction1, Transaction& transaction2);
 	std::vector<Transaction> getTransactions(bool isIncome);
 	Transaction& getTransactionByIdx(int idx, bool isIncome);
-	//void load();
-	//void save();
 
 	friend std::ofstream& operator <<(std::ofstream& out, Account& account)
 	{
@@ -118,9 +112,3 @@ public:
 	}
 
 };
-
-// write in file:
-// name of account = FileName
-// balance
-// debit
-// credit

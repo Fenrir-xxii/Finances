@@ -192,17 +192,8 @@ void Finances::showMyAccounts()
                                 std::cin.clear();
                                 std::cin.ignore(1000, '\n');
                             }while (!correctValue);
-
-                            /*text.drawMessageFrame("Enter transaction's amount");
-                            std::cin >> newAmount;
-                            std::cin.ignore(256, '\n');*/
                             newTransaction.setAmount(newAmount);
-
                             system("cls");
-                            /*menuCategoryExpenses.drawFrame("Expenses", true);
-                            menuCategoryExpenses.drawOptions();
-                            menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
-                            menuCategoryIncome.drawOptions(maxWidth, 2);*/
                             menuCategoryExpenses.drawFrame("Expenses", true, ConsoleColor::RED_FADE);
                             menuCategoryExpenses.drawOptions();
                             menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false, ConsoleColor::GREEN_FADE);
@@ -216,16 +207,12 @@ void Finances::showMyAccounts()
                                 {
                                 case UP_ARROW:
                                     menuCategoryExpensesActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
-                                    //menuCategoryExpenses.drawFrame("Expenses", true);
                                     menuCategoryExpenses.drawOptions();
-                                    //menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
                                     menuCategoryIncome.drawOptions(maxWidth, 2);
                                     break;
                                 case DOWN_ARROW:
                                     menuCategoryExpensesActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
-                                    //menuCategoryExpenses.drawFrame("Expenses", true);
                                     menuCategoryExpenses.drawOptions();
-                                    //menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
                                     menuCategoryIncome.drawOptions(maxWidth, 2);
                                     break;
                                 case TAB:
@@ -292,8 +279,6 @@ void Finances::showMyAccounts()
                             this->accounts[accountSelection].addTransaction(newTransaction);
                             transactions.push_back(newTransaction);
                             std::sort(transactions.begin(), transactions.end());
-                            //transactionMenu.clearOptions(multiMenuSize);
-                            //transactionMenu.drawOptions(transactions, multiMenuSize);
                             MultiPageMenu temp(transactions, multiMenuSize);
                             transactionMenu = temp;
                             accountData = getAllAccountsData();
@@ -319,8 +304,6 @@ void Finances::showMyAccounts()
             }
             accountMenu.drawFrame2();
             accountMenu.drawOptions(accountData);
-            /*MultiPageMenu temp(transactions, multiMenuSize);
-            transactionMenu = temp;*/
             transactionMenu.drawFrame2(0, 4);
             text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
             transactionMenu.drawOptions(transactions, multiMenuSize);
@@ -354,7 +337,6 @@ void Finances::showMyAccounts()
                         }
                     }
                 }
-                //this->accounts[accountSelection].editTransaction(this->accounts[accountSelection].getTransactionByIdx(indexOfTransaction, isIncome), indexOfTransaction);
                 if (isIncome)
                 {
                     this->accounts[accountSelection].editDebitTransaction(indexOfTransaction);
@@ -418,7 +400,6 @@ void Finances::showMyAccounts()
                 transactions = getAllTransactions(this->accounts[accountSelection]);
                 transactionsExpenses = this->accounts[accountSelection].getTransactions(false);
                 transactionsIncome = this->accounts[accountSelection].getTransactions(true);
-                //system("cls");
                 accountData = getAllAccountsData();
                 accountMenu.drawFrame2();
                 accountMenu.drawOptions(accountData);
@@ -428,7 +409,6 @@ void Finances::showMyAccounts()
                 transactionMenu.drawFrame2(0, 4);
                 text.drawText(3, 0, activeAcc, ConsoleColor::BLACK, ConsoleColor::YELLOW_FADE);
                 transactionMenu.drawOptions(transactions, multiMenuSize);
-                //accountData = getAllAccountsData();
             }
             else
             {
@@ -569,7 +549,6 @@ void Finances::showReportMenu(Account& account)
                 system("cls");
                 key = ESC;
             }
-            //system("pause");
             system("cls");
             break;
         case ESC:
@@ -694,7 +673,6 @@ void Finances::showOptions()
             }
             else if (selection == FINANCES_SETTINGS_OPTIONS::REMOVE_ACCOUNT)
             {
-                //TO DO
                 system("cls");
                 accounts.drawFrame();
                 accounts.drawOptions();
@@ -882,5 +860,4 @@ void Finances::removeAccount(int idx)
     }
 
     this->accounts.erase(accounts.begin() + idx);
-
 }

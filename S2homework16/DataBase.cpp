@@ -168,7 +168,6 @@ void DataBase::saveAll()
 {
 	saveCategories(categoryIncomePath, categoriesIncome);
 	saveCategories(categoryExpensesPath, categoriesExpenses);
-	//saveTransactions(transactionPath, transactions);
 	saveAccounts(accountPath, accounts);
 	saveCurrency(currencyPath, currency);
 }
@@ -199,22 +198,8 @@ Category& DataBase::getCategoryByName(std::string name, bool isIncome)
 	return categoriesExpenses[0]; // ??
 }
 
-//void DataBase::addTransaction(Transaction& transaction)
-//{
-//	for (int i = 0; i < transactions.size(); i++)
-//	{
-//		if (transaction == transactions[i])
-//		{
-//			return;
-//		}
-//	}
-//	this->transactions.push_back(transaction);
-//}
-
-
 void DataBase::saveAccounts(fs::path path, std::vector<Account>& account)
 {
-	//fs::path path = this->homePath;
 	fs::path mainPath = fs::current_path();
 	fs::current_path(path);
 	for (int i = 0; i < account.size(); i++)
@@ -259,13 +244,12 @@ void DataBase::loadAccounts(fs::path path, std::vector<Account>& accounts)
 	}
 
 	accounts.clear();
-	//std::ifstream in(path);
+
 	for (int i = 0; i < accNames.size(); i++)
 	{
 		Account account;
 		std::string accName = accNames[i].substr(0, accNames[i].length() - 4);
-		//accName.substr(0, accName.length() - 3);
-		account.setName(accName);  //remove '.txt'
+		account.setName(accName); 
 		fs::path fullPath = path.string() + accNames[i];
 		std::ifstream in(fullPath);
 		in >> account;
@@ -305,7 +289,6 @@ void DataBase::loadCurrency(fs::path path, std::vector<std::string>& currency)
 	{
 		std::cout << "Unable to open file" << std::endl;
 	}
-
 }
 
 void DataBase::saveCurrency(fs::path path, std::vector<std::string>& currency)

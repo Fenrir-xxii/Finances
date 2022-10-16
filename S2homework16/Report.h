@@ -17,15 +17,12 @@ private:
 	DataBase dataBase;
 	std::vector<Account> accounts;
 public:
-	//std::vector<Account> getMonthlyReport();
-	//std::vector<Account> getLastNDaysReport(int nDays);
 	void showMonthlyReport(Account& account, int month);
 	void showLastNDaysReport(Account& account, int nDays);
 	void showTransactionsByCategory(Account& account, int month);
 	void showNBiggestTransactions(Account& account, int qty, bool isIncome);
 	void printReport(Account & account, double &initBalance, double &finalBalance, std::string initDate, std::string finalDate);
 	void printCategoryReport(std::vector <ReportCategory> &results);
-	
 };
 
 bool reportCategorySort(ReportCategory& rp1, ReportCategory& rp2);

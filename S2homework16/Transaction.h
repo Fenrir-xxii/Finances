@@ -4,7 +4,6 @@
 #include "Category.h"
 #include <filesystem>
 #include <iomanip>
-//#include "DataBase.h"
 #include "Time.h"
 
 namespace fs = std::filesystem;
@@ -17,12 +16,10 @@ private:
 	std::string name;
 	std::chrono::time_point<std::chrono::system_clock> date;
 	Category category;
-	//std::vector<Category> categories;
 	std::vector<Category> categoriesIncome;
 	std::vector<Category> categoriesExpenses;
 	fs::path categoryIncomePath = fs::current_path().string() + "\\DataBase\\CategoriesIncome.txt";
 	fs::path categoryExpensesPath = fs::current_path().string() + "\\DataBase\\CategoriesExpenses.txt";
-	//bool isIncome;
 public:
 	Transaction() 
 	{
@@ -66,9 +63,6 @@ public:
 		in >> transaction.amount;
 		in.ignore(256, '\n');
 		in >> transaction.category;
-		//in.ignore(256, '\n');
-		/*DataBase db;
-		transaction.setCategory(db.getCategoryById(categoryId));*/
 		getline(in, transaction.name);
 		std::string date;
 		getline(in, date);
@@ -91,7 +85,7 @@ public:
 	friend std::ostream& operator <<(std::ostream& out, Transaction& transaction)
 	{
 		out << "Transaction's amount: " << transaction.amount << std::endl;
-		out << "Transaction's category: " << transaction.category; // << std::endl;
+		out << "Transaction's category: " << transaction.category;
 		out << "Transaction's name: " << transaction.name << std::endl;
 		out << "Transaction's date: " << timeToString(transaction.date) << std::endl;
 		return out;

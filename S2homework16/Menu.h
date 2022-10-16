@@ -19,35 +19,20 @@ public:
 	Menu(const std::vector<std::string>& options);
 	Menu() {};
 	void drawFrame();
-
 	void drawFrame(bool active);
-
 	void drawFrame(int cX, int xY);
-
 	void drawFrame(std::string header, bool active);
-
     void drawFrame(std::string header, bool active, ConsoleColor color);
-
 	void drawFrame(int cX, int cY, std::string header, bool active);
-
     void drawFrame(int cX, int cY, std::string header, bool active, ConsoleColor color);
-
 	void drawOptions();
-
 	void drawOptions(int cX, int cY);
-
 	void drawOptions2(int size, int currentLine, int previousLine);
-
 	void drawTransaction(Transaction& transaction);
-
 	void down();
-
 	void up();
-
 	int getSelectedOption() const;
-
 	void setActiveOption(int idx);
-
 	void drawMessageFrame(std::string message);
     void drawMessageFrame(std::string message, ConsoleColor color);
     void drawMessageFrame(std::string message, int width, int height);
@@ -64,13 +49,9 @@ private:
     int endRow;
     int rows;
     std::vector<std::string> options;
-
     size_t getMaxItemSize() const;
-
     size_t getFrameWidth() const;
-
     size_t getFrameHeight() const;
-
 public:
     MultiPageMenu(const std::vector<std::string>& options, int rows) 
     {

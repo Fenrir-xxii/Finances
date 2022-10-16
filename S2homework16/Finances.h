@@ -5,13 +5,6 @@
 #include "DataBase.h"
 #include "Report.h"
 
-//struct AccountData
-//{
-//	std::string name;
-//	double balance;
-//	std::string currency;
-//};
-
 class Finances
 {
 private:
@@ -22,7 +15,6 @@ private:
 public:
 	Finances()
 	{
-		//dataBase.load
 		dataBase.loadAccounts(accountPath, accounts);
 	}
 
@@ -34,5 +26,4 @@ public:
 	void removeAccount(int idx);
 	std::vector<Transaction> getAllTransactions(Account& account);
 	std::vector <AccountData> getAllAccountsData();
-	//int getIdxOfTransaction(bool isIncome);
 };

@@ -1,22 +1,5 @@
 #include "Account.h"
 
-//std::string Account::timeToString(std::chrono::system_clock::time_point tp) {
-//
-//	std::stringstream ss;
-//	ss << format("{:%d.%m.%Y}", tp);
-//	return ss.str();
-//}
-//
-//std::chrono::system_clock::time_point Account::fromString(const std::string& dateStr, const std::string& format) {
-//	std::stringstream ss{ dateStr };
-//	std::chrono::system_clock::time_point tp;
-//	ss >> std::chrono::parse(format, tp);
-//	if (ss.fail()) {
-//		throw "Can`t parse date";
-//	}
-//	return tp;
-//}
-
 void Account::addTransaction(Transaction& transaction)
 {
 	if (transaction.isIncome())
@@ -76,10 +59,7 @@ std::vector<std::string> Account::getCategoryNames(bool isIncome)
 
 void Account::editTransaction(Transaction& transaction, int idx)		// привести в порядок 
 {
-	//menu
 	std::vector<std::string> options;
-	//std::vector<std::string> categoryNamesIncome = dataBase.getCategoryNames(true);
-	//std::vector<std::string> categoryNamesExpenses = dataBase.getCategoryNames(false);
 	std::vector<std::string> categoryNamesIncome = getCategoryNames(true);
 	std::vector<std::string> categoryNamesExpenses = getCategoryNames(false);
 
@@ -103,15 +83,14 @@ void Account::editTransaction(Transaction& transaction, int idx)		// приве�
 	Menu menuCategoryExpenses(categoryNamesExpenses);
 	int key = 0;
 	int num = 0;
-	bool work = true;
-	bool work2 = true;
-	bool leftActive = true;
+	bool choosingFieldToEdit = true;
+	bool choosingCategory = true;
+	bool menuExpensesActive = true;
 	bool isDateValid = false;
-	bool correctValue = false;
+	bool isValueCorrect = false;
 	std::string newName;
 	std::string newDate;
 	double newAmount = 0;
-	//menu.drawMessageFrame("Pick field you want to edit");
 	menu.drawFrame();
 	menu.drawOptions();
 	do
@@ -146,18 +125,16 @@ void Account::editTransaction(Transaction& transaction, int idx)		// приве�
 					std::cin >> newAmount;
 					if (std::cin.fail())
 					{
-						correctValue = false;
+						isValueCorrect = false;
 					}
 					else
 					{
-						correctValue = true;
+						isValueCorrect = true;
 					}
 					std::cin.clear();
 					std::cin.ignore(1000, '\n');
 
-				} while (!correctValue);
-				
-				//std::cin >> newAmount;
+				} while (!isValueCorrect);
 				transaction.setAmount(newAmount);
 				amountAfterEdit = newAmount;
 				system("cls");
@@ -166,75 +143,49 @@ void Account::editTransaction(Transaction& transaction, int idx)		// приве�
 				break;
 			case 2:
 				system("cls");
-				menuCategoryExpenses.drawFrame("Expenses", leftActive, ConsoleColor::RED_FADE);
+				menuCategoryExpenses.drawFrame("Expenses", menuExpensesActive, ConsoleColor::RED_FADE);
 				menuCategoryExpenses.drawOptions();
-				menuCategoryIncome.drawFrame(maxWidth,0, "Income", !leftActive, ConsoleColor::GREEN_FADE);
+				menuCategoryIncome.drawFrame(maxWidth,0, "Income", !menuExpensesActive, ConsoleColor::GREEN_FADE);
 				menuCategoryIncome.drawOptions(maxWidth,2);
-				while (work2)
+				while (choosingCategory)
 				{
 					key = getKey();
 					switch (key)
 					{
 					case UP_ARROW:
-						leftActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
-						//menuCategoryExpenses.drawFrame("Expenses", leftActive, ConsoleColor::RED_FADE);
+						menuExpensesActive ? menuCategoryExpenses.up() : menuCategoryIncome.up();
 						menuCategoryExpenses.drawOptions();
-						//menuCategoryIncome.drawFrame(maxWidth, 0, "Income", !leftActive, ConsoleColor::GREEN_FADE);
 						menuCategoryIncome.drawOptions(maxWidth, 2);
 						break;
 					case DOWN_ARROW:
-						leftActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
-						//menuCategoryExpenses.drawFrame("Expenses", leftActive, ConsoleColor::RED_FADE);
+						menuExpensesActive ? menuCategoryExpenses.down() : menuCategoryIncome.down();
 						menuCategoryExpenses.drawOptions();
-						//menuCategoryIncome.drawFrame(maxWidth, 0, "Income", !leftActive, ConsoleColor::GREEN_FADE);
 						menuCategoryIncome.drawOptions(maxWidth, 2);
 						break;
 					case TAB:
-						leftActive = !leftActive;
+						menuExpensesActive = !menuExpensesActive;
 						break;
 					case ENTER:
-						//TODO
-						if (leftActive)
+						if (menuExpensesActive)
 						{
 							num = menuCategoryExpenses.getSelectedOption();
-							//transaction.setCategory(dataBase.getCategoryByName(categoryNamesExpenses[num], false));
 							transaction.setCategory(transaction.getCategoryByName(categoryNamesExpenses[num], false));
-							work2 = false;
+							choosingCategory = false;
 						}
 						else
 						{
 							num = menuCategoryIncome.getSelectedOption();
-							//transaction.setCategory(dataBase.getCategoryByName(categoryNamesIncome[num], true));
 							transaction.setCategory(transaction.getCategoryByName(categoryNamesIncome[num], true));
-							work2 = false;
+							choosingCategory = false;
 						}
 						system("cls");
 						break;
-					case CREATE_CATEGORY:  // key 'c'
-					{
-						////showAddNewCategoryMenu();
-						//system("cls");
-						////transaction.updateCategories(this->dataBase.getCategories(true), this->dataBase.getCategories(false));
-						//categoryNamesIncome = this->dataBase.getCategoryNames(true);
-						//categoryNamesExpenses = this->dataBase.getCategoryNames(false);
-						//Menu temp(categoryNamesIncome);
-						//menuCategoryIncome = temp;
-						//Menu temp2(categoryNamesExpenses);
-						//menuCategoryExpenses = temp2;
-						//menuCategoryExpenses.drawFrame("Expenses", true);
-						//menuCategoryExpenses.drawOptions();
-						//menuCategoryIncome.drawFrame(maxWidth, 0, "Income", false);
-						//menuCategoryIncome.drawOptions(maxWidth, 2);
-					}
-					break;
 					case ESC:
 						system("cls");
-						work2 = false;
+						choosingCategory = false;
 						break;
 					}
 				}
-				//menu.drawTransaction(transaction);
-				//menu.drawMessageFrame("Pick field you want to edit");
 				system("cls");
 				menu.drawFrame();
 				menu.drawTransaction(transaction);
@@ -256,10 +207,6 @@ void Account::editTransaction(Transaction& transaction, int idx)		// приве�
 						system("pause");
 					}
 				} while (!isDateValid);
-				//std::cin >> newDate;
-				//transaction.setDate(fromString(newDate, "%d.%m.%Y"));
-				//menu.drawTransaction(transaction);
-				//menu.drawMessageFrame("Pick field you want to edit");
 				system("cls");
 				menu.drawFrame();
 				menu.drawTransaction(transaction);
@@ -267,14 +214,15 @@ void Account::editTransaction(Transaction& transaction, int idx)		// приве�
 			}
 			break;
 		case ESC:
-			work = false;
+			choosingFieldToEdit = false;
 		default:
 			break;
 		}
 
-	} while (work);
+	} while (choosingFieldToEdit);
 
 	isIncomeAfterEdit = transaction.isIncome();
+	// change balance and/or category debit/credit
 	if (isIncomeBeforeEdit != isIncomeAfterEdit)
 	{
 		if (!isIncomeAfterEdit)
@@ -378,16 +326,12 @@ double Account::getBalanceByDate(std::chrono::time_point<std::chrono::system_clo
 
 void Account::sortTransactionsByDate()
 {
-	/*std::sort(this->debit.begin(), this->debit.end(), &Account::compareDate);
-	std::sort(this->credit.begin(), this->credit.end(), &Account::compareDate);*/
-
 	std::sort(this->debit.begin(), this->debit.end());
 	std::sort(this->credit.begin(), this->credit.end());
 }
 
 bool Account::compareDate(Transaction &transaction1, Transaction &transaction2)
 {
-	//return transaction1.getAmount() > transaction2.getAmount();
 	return transaction1.getDate() > transaction2.getDate();
 }
 
